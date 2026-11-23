@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#fff;color:#1A1F2B;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#161616;text-decoration:none}a:hover{color:#C8102E}
+button{font-family:inherit}
+input,select{font-family:inherit}
+::-webkit-scrollbar{height:6px;width:8px}::-webkit-scrollbar-thumb{background:#D5D8DE;border-radius:4px}
+@keyframes epSlideR{from{transform:translateX(100%)}to{transform:none}}
+@keyframes epSlideL{from{transform:translateX(-100%)}to{transform:none}}
+@keyframes epFade{from{opacity:0}to{opacity:1}}
+@keyframes epUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+button,a{transition:background-color .2s,color .2s,border-color .2s,transform .2s,box-shadow .2s}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;flex-direction:column;background:#fff">
+
+<div style="background:#C8102E;color:#fff;text-align:center;font-size:13px;font-weight:500;padding:8px 16px;letter-spacing:.01em">Frete grátis acima de R$ 299 · Retire grátis na loja de Ourinhos</div>
+
+<header style="background:rgba(255,255,255,.97);backdrop-filter:blur(10px);color:#161616;position:sticky;top:0;z-index:40;box-shadow:0 1px 0 #ECECEC">
+  <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+    <div style="max-width:1280px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;gap:32px">
+      <button onClick="{{ goHome }}" style="background:none;border:0;padding:0;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:Montserrat,sans-serif;font-weight:800;font-size:24px;letter-spacing:.04em;color:#fff">
+        <img src="images/logo-epos.png" alt="épos Original Brand" style="height:46px;width:auto;display:block">
+      </button>
+      <div style="flex:1;max-width:580px;position:relative">
+        <input value="{{ q }}" onChange="{{ onQ }}" onKeyDown="{{ onQKey }}" placeholder="Buscar calças, bermudas, jaquetas…" style="width:100%;height:44px;border:1px solid #E6E6E6;background:#F5F5F5;border-radius:999px;padding:0 48px 0 16px;font-size:15px;color:#1A1F2B;outline:none">
+        <button onClick="{{ doSearch }}" aria-label="Buscar" style="position:absolute;right:4px;top:4px;width:36px;height:36px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C8102E" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+        </button>
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+        <button aria-label="Minha conta" style="background:none;border:0;color:#161616;cursor:pointer;display:flex;align-items:center;gap:8px;padding:8px;font-size:14px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#161616" stroke-width="1.8"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>
+          <span>Entrar</span>
+        </button>
+        <button onClick="{{ openCart }}" aria-label="Carrinho" style="position:relative;background:none;border:0;color:#161616;cursor:pointer;display:flex;align-items:center;gap:8px;padding:8px;font-size:14px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#161616" stroke-width="1.8"><path d="M5 8h14l-1 13H6L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
+          <span>Carrinho</span>
+          <sc-if value="{{ hasCount }}" hint-placeholder-val="{{ false }}">
+            <span style="position:absolute;top:2px;left:20px;min-width:18px;height:18px;border-radius:9px;background:#C8102E;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 5px">{{ count }}</span>
+          </sc-if>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:12px 16px 10px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <button onClick="{{ goHome }}" style="background:none;border:0;padding:0;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:Montserrat,sans-serif;font-weight:800;font-size:20px;letter-spacing:.04em;color:#fff">
+          <img src="images/logo-epos.png" alt="épos Original Brand" style="height:36px;width:auto;display:block">
+        </button>
+        <div style="display:flex;gap:4px">
+          <button aria-label="Minha conta" style="width:44px;height:44px;background:none;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#161616" stroke-width="1.8"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>
+          </button>
+          <button onClick="{{ openCart }}" aria-label="Carrinho" style="position:relative;width:44px;height:44px;background:none;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#161616" stroke-width="1.8"><path d="M5 8h14l-1 13H6L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
+            <sc-if value="{{ hasCount }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute;top:4px;right:2px;min-width:18px;height:18px;border-radius:9px;background:#C8102E;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 5px">{{ count }}</span>
+            </sc-if>
+          </button>
+        </div>
+      </div>
+      <div style="position:relative">
+        <input value="{{ q }}" onChange="{{ onQ }}" onKeyDown="{{ onQKey }}" placeholder="O que você procura?" style="width:100%;height:44px;border:1px solid #E6E6E6;background:#F5F5F5;border-radius:999px;padding:0 48px 0 14px;font-size:16px;color:#1A1F2B;outline:none">
+        <button onClick="{{ doSearch }}" aria-label="Buscar" style="position:absolute;right:4px;top:4px;width:36px;height:36px;border:0;background:none;display:flex;align-items:center;justify-content:center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C8102E" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+  <nav style="border-top:1px solid #F0F0F0">
+    <div style="max-width:1280px;margin:0 auto;padding:0 16px;display:flex;gap:4px;justify-content:center">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3">
+        <button onClick="{{ n.go }}" style="background:none;border:0;cursor:pointer;color:{{ n.color }};font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase;padding:13px 18px;box-shadow:inset 0 -3px 0 {{ n.bar }}">{{ n.label }}</button>
+      </sc-for>
+    </div>
+  </nav>
+</header>
+
+<main style="flex:1">
+
+<!-- HOME -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <section style="animation:epFade .5s ease both;position:relative;height:{{ heroH }};min-height:520px;overflow:hidden;background:#111">
+    <sc-for list="{{ slides }}" as="sl" hint-placeholder-count="1">
+      <img src="{{ sl.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ sl.pos }};opacity:{{ sl.op }};transform:{{ sl.tf }};transition:opacity .9s ease,transform 7s ease-out">
+    </sc-for>
+    <div style="position:absolute;inset:0;background:{{ heroGrad }}"></div>
+    <div style="position:absolute;inset:0;display:flex;align-items:{{ heroAlign }}">
+      <div style="width:100%;max-width:1280px;margin:0 auto;padding:{{ heroPad }};display:flex;flex-direction:column;gap:18px;align-items:flex-start;color:#fff">
+        <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;gap:10px"><span style="width:28px;height:2px;background:#C8102E"></span>{{ banner.kicker }}</span>
+        <h1 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(40px,6.2vw,84px);line-height:.98;letter-spacing:-.02em;text-transform:uppercase;max-width:760px;text-wrap:balance">{{ banner.title }}</h1>
+        <p style="margin:0;font-size:clamp(16px,1.5vw,19px);line-height:1.5;max-width:460px;color:#F2F2F2">{{ banner.body }}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:8px">
+          <button onClick="{{ banner.go }}" style="height:54px;padding:0 32px;border:0;border-radius:4px;background:#C8102E;color:#fff;font-family:Montserrat,sans-serif;font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .2s" style-hover="background:#A50D26;transform:translateY(-1px)">{{ banner.cta }}</button>
+          <sc-if value="{{ banner.hasCode }}" hint-placeholder-val="{{ true }}">
+            <span style="height:54px;display:flex;align-items:center;padding:0 18px;border:1.5px dashed rgba(255,255,255,.8);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.04em;color:#fff">{{ banner.code }}</span>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;left:0;right:0;bottom:24px">
+      <div style="max-width:1280px;margin:0 auto;padding:0 {{ heroSide }};display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <div style="display:flex;gap:8px">
+          <sc-for list="{{ dots }}" as="d" hint-placeholder-count="3">
+            <button onClick="{{ d.go }}" aria-label="Banner" style="width:{{ d.w }};height:4px;border-radius:2px;border:0;padding:0;background:{{ d.bg }};cursor:pointer;transition:width .3s,background .3s"></button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:8px">
+            <button onClick="{{ prevBanner }}" aria-label="Anterior" style="width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);background:transparent;color:#fff;font-size:20px;cursor:pointer;transition:background .2s,color .2s" style-hover="background:#fff;color:#161616">‹</button>
+            <button onClick="{{ nextBanner }}" aria-label="Próximo" style="width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);background:transparent;color:#fff;font-size:20px;cursor:pointer;transition:background .2s,color .2s" style-hover="background:#fff;color:#161616">›</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#fff">
+    <div style="max-width:1280px;margin:0 auto;padding:{{ secPad }}">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:36px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#C8102E;display:flex;align-items:center;gap:10px"><span style="width:24px;height:2px;background:#C8102E"></span>Modelagens</span>
+        <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(28px,3.6vw,44px);line-height:1.05;letter-spacing:-.015em;text-transform:uppercase;text-wrap:balance">Compre por modelagem</h2>
+      </div>
+    </div>
+    <div style="display:grid;grid-auto-flow:column;grid-auto-columns:{{ shortcutCol }};gap:14px;overflow-x:auto;padding-bottom:6px">
+      <sc-for list="{{ shortcuts }}" as="s" hint-placeholder-count="6">
+        <button onClick="{{ s.go }}" style="background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;gap:12px;text-align:left">
+          <div style="width:100%;aspect-ratio:3/4;border-radius:4px;overflow:hidden;background-color:{{ s.bg }}">
+            <img src="{{ s.img }}" alt="{{ s.label }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease" style-hover="transform:scale(1.05)">
+          </div>
+          <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:#1A1F2B">{{ s.label }}</span>
+        </button>
+      </sc-for>
+    </div>
+    </div>
+  </section>
+
+  <section style="background:#F5F5F5">
+    <div style="max-width:1280px;margin:0 auto;padding:{{ secPad }}">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:36px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#C8102E;display:flex;align-items:center;gap:10px"><span style="width:24px;height:2px;background:#C8102E"></span>Novidades</span>
+        <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(28px,3.6vw,44px);line-height:1.05;letter-spacing:-.015em;text-transform:uppercase;text-wrap:balance">Lançamentos</h2>
+      </div>
+      <button onClick="{{ seeAll }}" style="background:none;border:0;padding:6px 0;cursor:pointer;color:#161616;font-family:Montserrat,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;border-bottom:2px solid #161616;transition:color .2s,border-color .2s" style-hover="color:#C8102E;border-color:#C8102E">Ver todos</button>
+    </div>
+    <div style="display:grid;grid-template-columns:{{ cols4 }};gap:36px 18px">
+      <sc-for list="{{ launches }}" as="it" hint-placeholder-count="4">
+        <dc-import name="ProductCard" p="{{ it }}" hint-size="100%,460px"></dc-import>
+      </sc-for>
+    </div>
+    </div>
+  </section>
+
+  <section style="position:relative;background:#C8102E;color:#fff;overflow:hidden">
+    <img src="images/v2/textura.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.14;mix-blend-mode:multiply;pointer-events:none">
+    <div style="position:relative;max-width:1280px;margin:0 auto;padding:{{ secPad }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:56px;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:28px;align-items:flex-start">
+        <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#fff;display:flex;align-items:center;gap:10px"><span style="width:24px;height:2px;background:#fff"></span>Fábrica própria · Ourinhos, SP</span>
+        <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(34px,4.6vw,60px);line-height:1;letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance">Direto da nossa fábrica pra você</h2>
+        <p style="margin:0;font-size:17px;line-height:1.6;color:#fff;max-width:520px;text-wrap:pretty">Cortamos, costuramos e lavamos cada peça aqui no interior de São Paulo. Sem intermediários, o preço que você paga é o preço de fábrica.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:24px;width:100%">
+          <div style="display:flex;flex-direction:column;gap:8px;border-top:2px solid rgba(255,255,255,.9);padding-top:16px">
+            <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(24px,2.4vw,30px);line-height:1.05;text-transform:uppercase">Desde 1980</span>
+            <span style="font-size:14px;line-height:1.5;color:#fff">Mais de 40 anos fazendo jeans.</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;border-top:2px solid rgba(255,255,255,.9);padding-top:16px">
+            <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(24px,2.4vw,30px);line-height:1.05;text-transform:uppercase">Preço de fábrica</span>
+            <span style="font-size:14px;line-height:1.5;color:#fff">Da costura direto para você.</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;border-top:2px solid rgba(255,255,255,.9);padding-top:16px">
+            <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(24px,2.4vw,30px);line-height:1.05;text-transform:uppercase">Troca fácil</span>
+            <span style="font-size:14px;line-height:1.5;color:#fff">30 dias para trocar, sem custo.</span>
+          </div>
+        </div>
+        <button onClick="{{ seeAll }}" style="height:54px;padding:0 30px;border:0;border-radius:4px;background:#fff;color:#C8102E;font-family:Montserrat,sans-serif;font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s,transform .2s" style-hover="background:#161616;color:#fff;transform:translateY(-1px)">Ver a coleção</button>
+      </div>
+      <div style="position:relative;aspect-ratio:1/1;border-radius:4px;overflow:hidden">
+        <img src="images/v2/fabrica.jpg" alt="Costura em tecido jeans" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s ease" style-hover="transform:scale(1.04)">
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#fff">
+    <div style="max-width:1280px;margin:0 auto;padding:{{ secPad }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:18px">
+      <sc-for list="{{ genderTiles }}" as="t" hint-placeholder-count="2">
+        <button onClick="{{ t.go }}" style="position:relative;border:0;padding:0;cursor:pointer;border-radius:4px;overflow:hidden;aspect-ratio:{{ tileRatio }};background-color:{{ t.bg }};text-align:left">
+          <img src="{{ t.img }}" alt="{{ t.label }}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ t.pos }};display:block;transition:transform .7s ease" style-hover="transform:scale(1.04)">
+          <span style="position:absolute;inset:0;background:linear-gradient(to top,rgba(12,12,12,.8) 0%,rgba(12,12,12,.25) 40%,rgba(12,12,12,0) 65%);pointer-events:none"></span>
+          <div style="position:absolute;left:28px;bottom:28px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;pointer-events:none">
+            <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(32px,3.8vw,48px);line-height:1;color:#fff;text-transform:uppercase;letter-spacing:-.01em">{{ t.label }}</span>
+            <span style="background:#fff;color:#161616;font-family:Montserrat,sans-serif;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:12px 18px;border-radius:4px">Comprar agora</span>
+          </div>
+        </button>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:#F5F5F5">
+    <div style="max-width:1280px;margin:0 auto;padding:{{ secPad }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:48px;align-items:center">
+      <div style="position:relative;aspect-ratio:4/5;border-radius:4px;overflow:hidden;background:#E4E6EA">
+        <img src="images/v2/look-extra.jpg" alt="Look com camisa branca e calça reta clara" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:28px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#C8102E;display:flex;align-items:center;gap:10px"><span style="width:24px;height:2px;background:#C8102E"></span>Compre o look</span>
+          <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(28px,3.6vw,44px);line-height:1.05;letter-spacing:-.015em;text-transform:uppercase;text-wrap:balance">Jeans claro para o dia a dia</h2>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:#5C6472;max-width:460px">Reta de lavagem clara com camisa branca. Para os dias frios, complete com a jaqueta oversized.</p>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ look }}" as="l" hint-placeholder-count="3">
+            <button onClick="{{ l.open }}" style="display:flex;gap:16px;align-items:center;padding:16px 0;border:0;border-top:1px solid #DDE0E5;background:none;cursor:pointer;text-align:left;width:100%;transition:padding .25s" style-hover="padding-left:8px">
+              <div style="width:84px;aspect-ratio:3/4;border-radius:4px;overflow:hidden;flex:none;background:#E4E6EA"><img src="{{ l.img }}" alt="{{ l.name }}" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:15px;color:#1A1F2B;line-height:1.35">{{ l.name }}</span>
+                <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:17px;color:{{ l.priceColor }}">{{ l.price }}</span>
+              </div>
+              <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#161616;flex:none">Ver peça →</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#fff">
+    <div style="max-width:1280px;margin:0 auto;padding:{{ secPad }}">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:36px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#C8102E;display:flex;align-items:center;gap:10px"><span style="width:24px;height:2px;background:#C8102E"></span>Favoritos</span>
+        <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(28px,3.6vw,44px);line-height:1.05;letter-spacing:-.015em;text-transform:uppercase;text-wrap:balance">Mais vendidos</h2>
+      </div>
+      <button onClick="{{ seeAll }}" style="background:none;border:0;padding:6px 0;cursor:pointer;color:#161616;font-family:Montserrat,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;border-bottom:2px solid #161616;transition:color .2s,border-color .2s" style-hover="color:#C8102E;border-color:#C8102E">Ver todos</button>
+    </div>
+    <div style="display:grid;grid-template-columns:{{ cols4 }};gap:36px 18px">
+      <sc-for list="{{ best }}" as="it" hint-placeholder-count="8">
+        <dc-import name="ProductCard" p="{{ it }}" hint-size="100%,460px"></dc-import>
+      </sc-for>
+    </div>
+    </div>
+  </section>
+
+  <section style="background:#F5F5F5">
+    <div style="max-width:1280px;margin:0 auto;padding:{{ secPad }}">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:36px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#C8102E;display:flex;align-items:center;gap:10px"><span style="width:24px;height:2px;background:#C8102E"></span>Avaliações</span>
+        <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(28px,3.6vw,44px);line-height:1.05;letter-spacing:-.015em;text-transform:uppercase;text-wrap:balance">Quem compra, volta</h2>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px">
+      <sc-for list="{{ homeReviews }}" as="r" hint-placeholder-count="3">
+        <div style="background:#fff;border-radius:4px;padding:28px;display:flex;flex-direction:column;gap:18px">
+          <span style="color:#C8102E;font-size:18px;letter-spacing:2px">{{ r.stars }}</span>
+          <p style="margin:0;font-size:17px;line-height:1.55;color:#1A1F2B;text-wrap:pretty;flex:1">“{{ r.text }}”</p>
+          <span style="font-size:14px;color:#5C6472"><strong style="color:#1A1F2B">{{ r.name }}</strong> · {{ r.city }}</span>
+          <button onClick="{{ r.open }}" style="display:flex;align-items:center;gap:12px;border:0;border-top:1px solid #EEF0F3;padding:16px 0 0;background:none;cursor:pointer;text-align:left">
+            <div style="width:48px;aspect-ratio:3/4;border-radius:3px;overflow:hidden;flex:none"><img src="{{ r.img }}" alt="{{ r.product }}" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+            <span style="font-size:13px;color:#161616;font-weight:700;line-height:1.35">{{ r.product }}</span>
+          </button>
+        </div>
+      </sc-for>
+    </div>
+    </div>
+  </section>
+
+  <section style="background:#C8102E;color:#fff">
+    <div style="max-width:1280px;margin:0 auto;padding:{{ secPad }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:32px;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(30px,3.8vw,48px);line-height:1;letter-spacing:-.015em;text-transform:uppercase;text-wrap:balance">Ganhe 10% OFF na primeira compra</h2>
+        <p style="margin:0;font-size:16px;line-height:1.55;color:#fff;max-width:460px">Cadastre seu e-mail para receber o cupom e saber dos lançamentos antes de todo mundo.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <sc-if value="{{ nlForm }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <input type="email" value="{{ nl }}" onChange="{{ onNl }}" onKeyDown="{{ onNlKey }}" placeholder="Seu melhor e-mail" style="flex:1 1 220px;min-width:0;height:54px;border:0;border-radius:4px;padding:0 16px;font-size:16px;color:#1A1F2B;outline:none">
+            <button onClick="{{ submitNl }}" style="flex:0 0 auto;height:54px;padding:0 26px;border:0;border-radius:4px;background:#161616;color:#fff;font-family:Montserrat,sans-serif;font-weight:800;font-size:14px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .2s" style-hover="background:#000;transform:translateY(-1px)">Quero meu cupom</button>
+          </div>
+          <sc-if value="{{ nlErr }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:14px;font-weight:700;color:#fff">Digite um e-mail válido.</span>
+          </sc-if>
+        </sc-if>
+        <sc-if value="{{ nlDone }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;color:#1A1F2B;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:4px">
+            <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:17px">Pronto! Seu cupom é EPOS10</span>
+            <span style="font-size:14px;color:#5C6472">Também enviamos para {{ nl }}. Use no carrinho.</span>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<!-- CATEGORIA -->
+<sc-if value="{{ isCategory }}" hint-placeholder-val="{{ false }}">
+  <div style="max-width:1280px;margin:0 auto;padding:20px 16px 56px;animation:epUp .45s cubic-bezier(.2,.8,.2,1) both">
+    <div style="font-size:13px;color:#5C6472;display:flex;gap:6px;flex-wrap:wrap">
+      <button onClick="{{ goHome }}" style="background:none;border:0;padding:0;color:#5C6472;cursor:pointer;font-size:13px">Início</button><span>/</span><span style="color:#1A1F2B">{{ catTitle }}</span>
+    </div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:12px 0 20px">
+      <div>
+        <h1 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(28px,4vw,44px);text-transform:uppercase;letter-spacing:-.015em">{{ catTitle }}</h1>
+        <span style="font-size:14px;color:#5C6472">{{ resultLabel }}</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex:1 1 auto;justify-content:flex-end">
+        <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ openFilters }}" style="flex:1;height:44px;border:1px solid #C9CDD4;background:#fff;border-radius:6px;font-weight:700;font-size:14px;color:#1A1F2B;cursor:pointer">Filtrar{{ filterCountLabel }}</button>
+        </sc-if>
+        <select value="{{ sort }}" onChange="{{ onSort }}" style="height:44px;border:1px solid #C9CDD4;border-radius:6px;padding:0 12px;font-size:14px;background:#fff;color:#1A1F2B;flex:1;max-width:240px">
+          <option value="vendidos">Mais vendidos</option>
+          <option value="menor">Menor preço</option>
+          <option value="lancamentos">Lançamentos</option>
+        </select>
+      </div>
+    </div>
+    <sc-if value="{{ hasActiveChips }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+        <sc-for list="{{ activeChips }}" as="c" hint-placeholder-count="2">
+          <button onClick="{{ c.remove }}" style="height:32px;padding:0 12px;border-radius:16px;border:0;background:#FDF2F4;color:#161616;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px">{{ c.label }} <span style="font-size:15px">×</span></button>
+        </sc-for>
+        <button onClick="{{ clearFilters }}" style="height:32px;padding:0 8px;border:0;background:none;color:#C8102E;font-size:13px;font-weight:700;cursor:pointer">Limpar tudo</button>
+      </div>
+    </sc-if>
+
+    <div style="display:flex;gap:32px;align-items:flex-start">
+      <sc-if value="{{ showFilterPanel }}" hint-placeholder-val="{{ true }}">
+        <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ closeFilters }}" style="position:fixed;inset:0;background:rgba(12,12,12,.5);z-index:60;animation:epFade .2s"></div>
+        </sc-if>
+        <aside style="position:{{ fPos }};top:{{ fTop }};left:0;bottom:0;z-index:61;width:{{ fWidth }};flex:none;background:#fff;overflow-y:auto;display:flex;flex-direction:column;animation:{{ fAnim }}">
+          <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid #E4E6EA;position:sticky;top:0;background:#fff">
+              <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:18px">Filtrar</span>
+              <button onClick="{{ closeFilters }}" aria-label="Fechar" style="width:44px;height:44px;border:0;background:none;font-size:26px;cursor:pointer;color:#1A1F2B">×</button>
+            </div>
+          </sc-if>
+          <div style="padding:{{ fPad }};display:flex;flex-direction:column;gap:28px;flex:1">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.06em">Tamanho</span>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+                <sc-for list="{{ fSizes }}" as="o" hint-placeholder-count="7">
+                  <button onClick="{{ o.toggle }}" style="height:44px;border-radius:6px;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.color }};font-weight:700;font-size:14px;cursor:pointer">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.06em">Cor / lavagem</span>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <sc-for list="{{ fWashes }}" as="o" hint-placeholder-count="6">
+                  <button onClick="{{ o.toggle }}" style="display:flex;align-items:center;gap:12px;background:none;border:0;padding:8px 0;cursor:pointer;font-size:14px;color:#1A1F2B;text-align:left">
+                    <span style="width:22px;height:22px;border-radius:50%;background:{{ o.hex }};box-shadow:{{ o.ring }}"></span>{{ o.label }}
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.06em">Modelagem</span>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <sc-for list="{{ fFits }}" as="o" hint-placeholder-count="6">
+                  <button onClick="{{ o.toggle }}" style="display:flex;align-items:center;gap:12px;background:none;border:0;padding:9px 0;cursor:pointer;font-size:14px;color:#1A1F2B;text-align:left">
+                    <span style="width:20px;height:20px;border-radius:4px;border:1.5px solid {{ o.border }};background:{{ o.bg }};color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center">{{ o.check }}</span>{{ o.label }}
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.06em">Faixa de preço</span>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <sc-for list="{{ fPrices }}" as="o" hint-placeholder-count="4">
+                  <button onClick="{{ o.toggle }}" style="display:flex;align-items:center;gap:12px;background:none;border:0;padding:9px 0;cursor:pointer;font-size:14px;color:#1A1F2B;text-align:left">
+                    <span style="width:20px;height:20px;border-radius:50%;border:1.5px solid {{ o.border }};box-shadow:inset 0 0 0 4px #fff;background:{{ o.bg }}"></span>{{ o.label }}
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+            <div style="position:sticky;bottom:0;background:#fff;border-top:1px solid #E4E6EA;padding:12px 16px;display:flex;gap:10px">
+              <button onClick="{{ clearFilters }}" style="flex:1;height:48px;border:1px solid #C9CDD4;background:#fff;border-radius:6px;font-weight:700;font-size:14px;cursor:pointer;color:#1A1F2B">Limpar</button>
+              <button onClick="{{ closeFilters }}" style="flex:2;height:48px;border:0;background:#161616;color:#fff;border-radius:6px;font-weight:700;font-size:14px;cursor:pointer">Ver {{ resultLabel }}</button>
+            </div>
+          </sc-if>
+        </aside>
+      </sc-if>
+      <div style="flex:1;min-width:0">
+        <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax({{ cardMin }},1fr));gap:28px 16px">
+            <sc-for list="{{ results }}" as="it" hint-placeholder-count="8">
+              <dc-import name="ProductCard" p="{{ it }}" hint-size="100%,420px"></dc-import>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#F5F5F5;border-radius:8px;padding:48px 24px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center">
+            <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:18px">Nenhum produto encontrado</span>
+            <span style="color:#5C6472;font-size:15px">Tente remover algum filtro ou buscar por outro termo.</span>
+            <button onClick="{{ clearFilters }}" style="height:44px;padding:0 22px;border:0;border-radius:6px;background:#161616;color:#fff;font-weight:700;cursor:pointer">Limpar filtros</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- PRODUTO -->
+<sc-if value="{{ isProduct }}" hint-placeholder-val="{{ false }}">
+  <div style="max-width:1280px;margin:0 auto;padding:20px 16px 56px;animation:epUp .45s cubic-bezier(.2,.8,.2,1) both">
+    <div style="font-size:13px;color:#5C6472;display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+      <button onClick="{{ goHome }}" style="background:none;border:0;padding:0;color:#5C6472;cursor:pointer;font-size:13px">Início</button><span>/</span>
+      <button onClick="{{ pd.goGender }}" style="background:none;border:0;padding:0;color:#5C6472;cursor:pointer;font-size:13px">{{ pd.gender }}</button><span>/</span>
+      <button onClick="{{ pd.goFit }}" style="background:none;border:0;padding:0;color:#5C6472;cursor:pointer;font-size:13px">{{ pd.fitLabel }}</button>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+      <div style="flex:1 1 400px;max-width:640px;display:flex;flex-direction:column;gap:12px">
+        <div style="position:relative;aspect-ratio:3/4;border-radius:8px;overflow:hidden;background-color:{{ pd.bg }}">
+          <img src="{{ pd.mainImg }}" alt="{{ pd.name }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <sc-if value="{{ pd.hasOff }}" hint-placeholder-val="{{ false }}">
+            <span style="position:absolute;top:14px;left:14px;background:#C8102E;color:#fff;font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;padding:6px 10px;border-radius:4px">{{ pd.off }}</span>
+          </sc-if>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+          <sc-for list="{{ pd.gallery }}" as="g" hint-placeholder-count="4">
+            <button onClick="{{ g.pick }}" aria-label="{{ g.label }}" style="aspect-ratio:3/4;border-radius:6px;border:2px solid {{ g.border }};padding:0;cursor:pointer;overflow:hidden;background-color:{{ g.bg }}">
+              <img src="{{ g.img }}" alt="{{ g.label }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">
+            </button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:12px;color:#5C6472;letter-spacing:.04em">REF. {{ pd.ref }}</span>
+          <h1 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(22px,3vw,30px);line-height:1.2;text-wrap:balance">{{ pd.name }}</h1>
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:6px">
+            <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:28px;color:{{ pd.priceColor }}">{{ pd.price }}</span>
+            <sc-if value="{{ pd.hasOff }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:16px;color:#8A909B;text-decoration:line-through">{{ pd.old }}</span>
+            </sc-if>
+          </div>
+          <span style="font-size:15px;color:#5C6472">ou {{ pd.inst }} sem juros no cartão</span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:14px"><strong>Cor / lavagem:</strong> {{ pd.washName }}</span>
+          <div style="display:flex;gap:12px">
+            <sc-for list="{{ pd.washes }}" as="w" hint-placeholder-count="2">
+              <button onClick="{{ w.pick }}" aria-label="{{ w.name }}" title="{{ w.name }}" style="width:40px;height:40px;border-radius:50%;border:0;cursor:pointer;background:{{ w.hex }};box-shadow:{{ w.ring }}"></button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div ref="{{ sizesRef }}" style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;scroll-margin-top:180px">
+            <span style="font-size:14px"><strong>Tamanho:</strong> {{ pd.sizeLabel }}</span>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:flex-end">
+              <button onClick="{{ openAdv }}" style="background:none;border:0;padding:0;cursor:pointer;color:#C8102E;font-size:14px;font-weight:700;text-decoration:underline;text-underline-offset:3px">Qual é o meu tamanho?</button>
+              <button onClick="{{ openGuide }}" style="background:none;border:0;padding:0;cursor:pointer;color:#161616;font-size:14px;font-weight:700;text-decoration:underline;text-underline-offset:3px">Guia de medidas</button>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px 8px;padding-top:6px">
+            <sc-for list="{{ pd.sizes }}" as="s" hint-placeholder-count="7">
+              <button onClick="{{ s.pick }}" disabled="{{ s.out }}" style="position:relative;transition:border-color .15s,background-color .15s;min-width:52px;height:48px;padding:0 12px;border-radius:6px;border:1.5px solid {{ s.border }};background-color:{{ s.bg }};background-image:{{ s.strike }};color:{{ s.color }};text-decoration:{{ s.deco }};cursor:{{ s.cursor }};font-weight:700;font-size:15px">{{ s.label }}<sc-if value="{{ s.low }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-7px;right:-6px;width:12px;height:12px;border-radius:50%;background:#C8102E;border:2px solid #fff"></span></sc-if></button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ sizeErr }}" hint-placeholder-val="{{ false }}">
+            <span style="color:#C8102E;font-size:14px;font-weight:500">Selecione um tamanho para continuar.</span>
+          </sc-if>
+          <sc-if value="{{ pd.hasLowMsg }}" hint-placeholder-val="{{ false }}">
+            <span style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:#C8102E"><span style="width:8px;height:8px;border-radius:50%;background:#C8102E;flex:none"></span>{{ pd.lowMsg }}</span>
+          </sc-if>
+        </div>
+
+        <button onClick="{{ addToCart }}" style="height:56px;border:0;border-radius:6px;background:#C8102E;color:#fff;font-family:Montserrat,sans-serif;font-weight:800;font-size:16px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;box-shadow:0 2px 6px rgba(200,16,46,.25)" style-hover="background:#A50D26">Adicionar ao carrinho</button>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:-8px">
+          <sc-for list="{{ trustBadges }}" as="tb" hint-placeholder-count="3">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:14px 6px;background:#F5F5F5;border-radius:4px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#161616" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ tb.icon }}"></path></svg>
+              <span style="font-size:12px;line-height:1.3;font-weight:700;color:#161616">{{ tb.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="border:1px solid #E4E6EA;border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:15px">Calcular frete e prazo</span>
+          <div style="display:flex;gap:8px">
+            <input value="{{ cep }}" onChange="{{ onCep }}" onKeyDown="{{ onCepKey }}" inputmode="numeric" placeholder="00000-000" style="flex:1;min-width:0;height:46px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none">
+            <button onClick="{{ calcFreight }}" style="height:46px;padding:0 20px;border:0;border-radius:6px;background:#161616;color:#fff;font-weight:700;font-size:14px;cursor:pointer">Calcular</button>
+          </div>
+          <sc-if value="{{ cepErr }}" hint-placeholder-val="{{ false }}">
+            <span style="color:#C8102E;font-size:13px">Digite um CEP válido com 8 números.</span>
+          </sc-if>
+          <sc-if value="{{ freight }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ freightOpts }}" as="f" hint-placeholder-count="3">
+                <div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #EEF0F3">
+                  <div style="display:flex;flex-direction:column;gap:2px">
+                    <span style="font-size:14px;font-weight:700">{{ f.name }}</span>
+                    <span style="font-size:13px;color:#5C6472">{{ f.detail }}</span>
+                  </div>
+                  <span style="font-size:14px;font-weight:700;color:{{ f.color }};white-space:nowrap">{{ f.price }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:18px;border-top:1px solid #E4E6EA;padding-top:22px">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:15px">Descrição</span>
+            <p style="margin:0;font-size:15px;line-height:1.6;color:#3A404C;text-wrap:pretty">{{ pd.desc }}</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:15px">Composição</span>
+            <p style="margin:0;font-size:15px;line-height:1.6;color:#3A404C">{{ pd.comp }}</p>
+            <p style="margin:0;font-size:14px;line-height:1.6;color:#5C6472">Lavar do avesso em água fria. Não usar alvejante. Secar à sombra.</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;background:#F5F5F5;border-radius:6px;padding:12px 14px;font-size:13px;color:#161616;font-weight:500">
+            <span style="width:8px;height:8px;background:#C8102E;border-radius:2px;flex:none"></span>Feito na nossa fábrica no interior de SP, desde 1980.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:64px;padding-top:48px;border-top:1px solid #E4E6EA;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+      <div style="flex:0 1 300px;display:flex;flex-direction:column;gap:14px">
+        <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(26px,3vw,36px);text-transform:uppercase;letter-spacing:-.01em">Avaliações</h2>
+        <div style="display:flex;align-items:baseline;gap:10px"><span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:60px;line-height:1">{{ pd.rating }}</span><span style="font-size:15px;color:#5C6472">de 5</span></div>
+        <span style="color:#C8102E;font-size:20px;letter-spacing:2px">{{ pd.stars }}</span>
+        <span style="font-size:14px;color:#5C6472">{{ pd.reviewsLabel }}</span>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px">
+          <sc-for list="{{ pd.dist }}" as="d" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#5C6472">
+              <span style="width:24px">{{ d.label }}</span>
+              <div style="flex:1;height:6px;border-radius:3px;background:#E4E6EA;overflow:hidden"><div style="height:100%;width:{{ d.pct }};background:#161616"></div></div>
+              <span style="width:34px;text-align:right">{{ d.pct }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column">
+        <sc-for list="{{ pd.comments }}" as="c" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:8px;padding:22px 0;border-bottom:1px solid #EEF0F3">
+            <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline">
+              <span style="color:#C8102E;font-size:15px;letter-spacing:2px">{{ c.stars }}</span>
+              <span style="font-size:12px;color:#8A909B">{{ c.date }}</span>
+            </div>
+            <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:16px">{{ c.title }}</span>
+            <p style="margin:0;font-size:15px;line-height:1.6;color:#3A404C;text-wrap:pretty">{{ c.text }}</p>
+            <span style="font-size:13px;color:#5C6472"><strong style="color:#1A1F2B">{{ c.name }}</strong> · {{ c.city }} · Tam. {{ c.size }} · Compra verificada</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="padding-top:64px">
+      <h2 style="margin:0 0 28px;font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(26px,3vw,36px);text-transform:uppercase;letter-spacing:-.01em">Você também pode gostar</h2>
+      <div style="display:grid;grid-template-columns:{{ cols4 }};gap:28px 16px">
+        <sc-for list="{{ related }}" as="it" hint-placeholder-count="4">
+          <dc-import name="ProductCard" p="{{ it }}" hint-size="100%,420px"></dc-import>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+</sc-if>
+
+<!-- CHECKOUT -->
+<sc-if value="{{ isCheckout }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#F5F5F5;min-height:70vh;animation:epUp .45s cubic-bezier(.2,.8,.2,1) both">
+    <div style="max-width:1160px;margin:0 auto;padding:24px 16px 56px">
+      <h1 style="margin:0 0 18px;font-family:Montserrat,sans-serif;font-weight:800;font-size:24px">Finalizar compra</h1>
+      <div style="display:flex;gap:8px;margin-bottom:20px">
+        <sc-for list="{{ steps }}" as="st" hint-placeholder-count="3">
+          <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+            <div style="height:4px;border-radius:2px;background:{{ st.bar }}"></div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="width:24px;height:24px;border-radius:50%;background:{{ st.dot }};color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none">{{ st.mark }}</span>
+              <span style="font-size:13px;font-weight:700;color:{{ st.color }}">{{ st.label }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border-radius:8px;padding:40px 24px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center">
+          <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:18px">Seu carrinho está vazio</span>
+          <button onClick="{{ seeAll }}" style="height:46px;padding:0 24px;border:0;border-radius:6px;background:#C8102E;color:#fff;font-weight:700;cursor:pointer">Ver produtos</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ cartFilled }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+          <div style="flex:1 1 520px;min-width:0;background:#fff;border-radius:8px;padding:24px;box-shadow:0 1px 2px rgba(0,0,0,.04)">
+
+            <sc-if value="{{ step1 }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:18px">
+                <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:18px">Identificação</h2>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+                  <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C">E-mail<input type="email" placeholder="seuemail@exemplo.com" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C">Nome completo<input placeholder="Como no documento" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C">CPF<input inputmode="numeric" placeholder="000.000.000-00" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C">Celular (WhatsApp)<input inputmode="tel" placeholder="(14) 99999-9999" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                </div>
+                <button onClick="{{ toStep2 }}" style="height:52px;border:0;border-radius:6px;background:#161616;color:#fff;font-family:Montserrat,sans-serif;font-weight:700;font-size:15px;cursor:pointer">Continuar para entrega</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ step2 }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:18px">
+                <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:18px">Entrega</h2>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <sc-for list="{{ shipOpts }}" as="o" hint-placeholder-count="3">
+                    <button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:14px;text-align:left;padding:16px;border-radius:8px;border:1.5px solid {{ o.border }};background:{{ o.bg }};cursor:pointer">
+                      <span style="width:20px;height:20px;border-radius:50%;border:1.5px solid {{ o.border }};box-shadow:inset 0 0 0 4px #fff;background:{{ o.dot }};flex:none"></span>
+                      <span style="flex:1;display:flex;flex-direction:column;gap:3px">
+                        <span style="font-size:15px;font-weight:700;color:#1A1F2B">{{ o.title }}</span>
+                        <span style="font-size:13px;color:#5C6472">{{ o.detail }}</span>
+                      </span>
+                      <span style="font-size:15px;font-weight:700;color:{{ o.priceColor }};white-space:nowrap">{{ o.price }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ needsAddress }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px">
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C">CEP<input value="{{ cep }}" onChange="{{ onCep }}" inputmode="numeric" placeholder="00000-000" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C;grid-column:span 2">Endereço<input placeholder="Rua, avenida" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C">Número<input placeholder="123" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C">Complemento<input placeholder="Opcional" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C">Bairro<input style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C">Cidade / UF<input placeholder="Ourinhos / SP" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                  </div>
+                </sc-if>
+                <div style="display:flex;gap:10px">
+                  <button onClick="{{ toStep1 }}" style="flex:1;height:52px;border:1px solid #C9CDD4;border-radius:6px;background:#fff;color:#1A1F2B;font-weight:700;font-size:15px;cursor:pointer">Voltar</button>
+                  <button onClick="{{ toStep3 }}" style="flex:2;height:52px;border:0;border-radius:6px;background:#161616;color:#fff;font-family:Montserrat,sans-serif;font-weight:700;font-size:15px;cursor:pointer">Continuar para pagamento</button>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ step3 }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:18px">
+                <h2 style="margin:0;font-family:Montserrat,sans-serif;font-weight:700;font-size:18px">Pagamento</h2>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+                  <sc-for list="{{ payTabs }}" as="t" hint-placeholder-count="3">
+                    <button onClick="{{ t.pick }}" style="height:52px;border-radius:8px;border:1.5px solid {{ t.border }};background:{{ t.bg }};color:{{ t.color }};font-weight:700;font-size:14px;cursor:pointer">{{ t.label }}</button>
+                  </sc-for>
+                </div>
+
+                <sc-if value="{{ payPix }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center;background:#F5F5F5;border-radius:8px;padding:20px">
+                    <div style="background:#fff;padding:12px;border-radius:6px;flex:none">
+                      <div style="display:grid;grid-template-columns:repeat(25,6px);grid-auto-rows:6px">
+                        <sc-for list="{{ qr }}" as="c" hint-placeholder-count="0">
+                          <span style="background:{{ c.bg }}"></span>
+                        </sc-for>
+                      </div>
+                    </div>
+                    <div style="flex:1 1 220px;display:flex;flex-direction:column;gap:10px">
+                      <span style="font-size:15px;font-weight:700">Pague {{ totalFmt }} com Pix</span>
+                      <span style="font-size:14px;color:#5C6472;line-height:1.5">Abra o app do seu banco, escolha Pix e escaneie o código. A aprovação é imediata. O código expira em 30 minutos.</span>
+                      <button onClick="{{ copyPix }}" style="height:44px;border:1.5px solid #161616;border-radius:6px;background:#fff;color:#161616;font-weight:700;font-size:14px;cursor:pointer;align-self:flex-start;padding:0 18px">{{ copyLabel }}</button>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ payCard }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px">
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C;grid-column:1/-1">Número do cartão<input inputmode="numeric" placeholder="0000 0000 0000 0000" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C;grid-column:1/-1">Nome impresso no cartão<input style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C">Validade<input placeholder="MM/AA" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C">CVV<input inputmode="numeric" placeholder="000" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 14px;font-size:16px;outline:none"></label>
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#3A404C;grid-column:1/-1">Parcelamento
+                      <select value="{{ inst }}" onChange="{{ onInst }}" style="height:48px;border:1px solid #C9CDD4;border-radius:6px;padding:0 12px;font-size:16px;background:#fff">
+                        <sc-for list="{{ instOpts }}" as="o" hint-placeholder-count="6">
+                          <option value="{{ o.n }}">{{ o.label }}</option>
+                        </sc-for>
+                      </select>
+                    </label>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ payBoleto }}" hint-placeholder-val="{{ false }}">
+                  <div style="background:#F5F5F5;border-radius:8px;padding:20px;font-size:14px;line-height:1.6;color:#3A404C">O boleto de <strong>{{ totalFmt }}</strong> será gerado após a confirmação, com vencimento em 3 dias úteis. O pedido é enviado depois da compensação, que leva até 2 dias úteis.</div>
+                </sc-if>
+
+                <div style="display:flex;gap:10px">
+                  <button onClick="{{ toStep2 }}" style="flex:1;height:56px;border:1px solid #C9CDD4;border-radius:6px;background:#fff;color:#1A1F2B;font-weight:700;font-size:15px;cursor:pointer">Voltar</button>
+                  <button onClick="{{ finish }}" style="flex:2;height:56px;border:0;border-radius:6px;background:#C8102E;color:#fff;font-family:Montserrat,sans-serif;font-weight:800;font-size:15px;letter-spacing:.03em;text-transform:uppercase;cursor:pointer">Finalizar pedido</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+
+          <aside style="flex:1 1 320px;max-width:{{ asideMax }};position:{{ asidePos }};top:150px;background:#fff;border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)">
+            <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:16px">Resumo do pedido</span>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <sc-for list="{{ cartItems }}" as="c" hint-placeholder-count="2">
+                <div style="display:flex;gap:12px;align-items:center">
+                  <div style="position:relative;width:52px;aspect-ratio:3/4;border-radius:4px;background:{{ c.bg }};flex:none">
+                    <img src="{{ c.img }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:4px;display:block">
+                    <span style="position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;border-radius:10px;background:#161616;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ c.qty }}</span>
+                  </div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                    <span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.name }}</span>
+                    <span style="font-size:12px;color:#5C6472">{{ c.meta }}</span>
+                  </div>
+                  <span style="font-size:13px;font-weight:700;white-space:nowrap">{{ c.total }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="border-top:1px solid #E4E6EA;padding-top:14px;display:flex;flex-direction:column;gap:8px;font-size:14px">
+              <div style="display:flex;justify-content:space-between"><span style="color:#5C6472">Subtotal</span><span>{{ subFmt }}</span></div>
+              <sc-if value="{{ hasDisc }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;justify-content:space-between;color:#C8102E"><span>Cupom EPOS10</span><span>− {{ discFmt }}</span></div>
+              </sc-if>
+              <div style="display:flex;justify-content:space-between"><span style="color:#5C6472">Frete</span><span>{{ shipFmt }}</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid #E4E6EA;padding-top:12px;margin-top:4px">
+                <span style="font-weight:700">Total</span><span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:22px">{{ totalFmt }}</span>
+              </div>
+              <span style="font-size:12px;color:#5C6472;text-align:right">ou {{ totalInst }} sem juros</span>
+            </div>
+          </aside>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<!-- CONFIRMADO -->
+<sc-if value="{{ isSuccess }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#F5F5F5;padding:48px 16px 72px">
+    <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:10px;padding:40px 28px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+      <div style="width:64px;height:64px;border-radius:50%;background:#161616;color:#fff;display:flex;align-items:center;justify-content:center">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12.5 10 17.5 19 7"></polyline></svg>
+      </div>
+      <h1 style="margin:0;font-family:Montserrat,sans-serif;font-weight:800;font-size:26px">Pedido confirmado!</h1>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:13px;color:#5C6472;text-transform:uppercase;letter-spacing:.08em">Número do pedido</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:22px;color:#161616;font-weight:700">{{ order.no }}</span>
+      </div>
+      <p style="margin:0;font-size:16px;line-height:1.55;color:#3A404C">Você receberá o código de rastreio por e-mail</p>
+      <div style="width:100%;border-top:1px solid #E4E6EA;padding-top:16px;display:flex;flex-direction:column;gap:8px;font-size:14px;text-align:left">
+        <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#5C6472">Itens</span><span>{{ order.count }}</span></div>
+        <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#5C6472">Entrega</span><span>{{ order.ship }}</span></div>
+        <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#5C6472">Pagamento</span><span>{{ order.pay }}</span></div>
+        <div style="display:flex;justify-content:space-between;gap:12px;font-weight:700"><span>Total</span><span>{{ order.total }}</span></div>
+      </div>
+      <button onClick="{{ goHome }}" style="margin-top:8px;height:50px;padding:0 28px;border:0;border-radius:6px;background:#C8102E;color:#fff;font-family:Montserrat,sans-serif;font-weight:700;font-size:15px;cursor:pointer">Continuar comprando</button>
+    </div>
+  </div>
+</sc-if>
+
+</main>
+
+<sc-if value="{{ showTrust }}" hint-placeholder-val="{{ true }}">
+  <div style="background:#F5F5F5;border-top:1px solid #ECEDEF">
+    <div style="max-width:1280px;margin:0 auto;padding:20px 16px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px 40px">
+      <span style="display:flex;align-items:center;gap:10px;font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;color:#161616"><span style="width:8px;height:8px;background:#C8102E;border-radius:2px"></span>Direto da fábrica desde 1980</span>
+      <span style="display:flex;align-items:center;gap:10px;font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;color:#161616"><span style="width:8px;height:8px;background:#C8102E;border-radius:2px"></span>Pix e cartão em até 6x</span>
+      <span style="display:flex;align-items:center;gap:10px;font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;color:#161616"><span style="width:8px;height:8px;background:#C8102E;border-radius:2px"></span>Troca fácil</span>
+    </div>
+  </div>
+</sc-if>
+
+<footer style="position:relative;background:#161616;color:#fff;overflow:hidden">
+  <img src="images/v2/textura.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.12;mix-blend-mode:luminosity;pointer-events:none">
+  <div style="position:relative;max-width:1280px;margin:0 auto;padding:64px 16px 8px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;border-bottom:1px solid rgba(255,255,255,.14)">
+    <img src="images/logo-epos-branco.png" alt="épos Original Brand" style="height:clamp(64px,9vw,120px);width:auto;display:block;margin-bottom:28px">
+    <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#CFCFCF;padding-bottom:36px">Jeans de fábrica desde 1980</span>
+  </div>
+  <div style="position:relative;max-width:1280px;margin:0 auto;padding:44px 16px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#C8102E">épos Original Brand</span>
+      <span style="font-size:14px;line-height:1.6;color:#CFCFCF">Fábrica de jeans no interior de São Paulo desde 1980.</span>
+      <div style="display:flex;gap:16px;font-size:14px;font-weight:700">
+        <a href="#" style="color:#fff">Instagram</a><a href="#" style="color:#fff">Facebook</a><a href="#" style="color:#fff">TikTok</a>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+      <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#fff;margin-bottom:4px">Loja</span>
+      <button onClick="{{ goF }}" style="background:none;border:0;padding:0;color:#CFCFCF;text-align:left;cursor:pointer;font-size:14px">Feminino</button>
+      <button onClick="{{ goM }}" style="background:none;border:0;padding:0;color:#CFCFCF;text-align:left;cursor:pointer;font-size:14px">Masculino</button>
+      <button onClick="{{ goPromo }}" style="background:none;border:0;padding:0;color:#CFCFCF;text-align:left;cursor:pointer;font-size:14px">Promoções</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+      <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#fff;margin-bottom:4px">Ajuda</span>
+      <a href="#" style="color:#CFCFCF">Trocas e devoluções</a>
+      <a href="#" style="color:#CFCFCF">Prazos e frete</a>
+      <a href="#" style="color:#CFCFCF">Meus pedidos</a>
+      <a href="#" style="color:#CFCFCF">Fale conosco</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.5;color:#CFCFCF">
+      <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#fff;margin-bottom:4px">Loja de fábrica</span>
+      <span>Rua Exemplo, 000 · Centro<br>Ourinhos – SP · 19900-000</span>
+      <span>Seg. a sex. 9h–18h · Sáb. 9h–13h</span>
+    </div>
+  </div>
+  <div style="position:relative;max-width:1280px;margin:0 auto;padding:20px 84px 28px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid rgba(255,255,255,.14)">
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <span style="background:#fff;color:#161616;font-size:12px;font-weight:700;padding:6px 10px;border-radius:4px">Pix</span>
+      <span style="background:#fff;color:#161616;font-size:12px;font-weight:700;padding:6px 10px;border-radius:4px">Visa</span>
+      <span style="background:#fff;color:#161616;font-size:12px;font-weight:700;padding:6px 10px;border-radius:4px">Mastercard</span>
+      <span style="background:#fff;color:#161616;font-size:12px;font-weight:700;padding:6px 10px;border-radius:4px">Elo</span>
+      <span style="background:#fff;color:#161616;font-size:12px;font-weight:700;padding:6px 10px;border-radius:4px">Boleto</span>
+    </div>
+    <span style="font-size:12px;color:#A8A8A8">© 2026 EPOS JEANS · CNPJ 00.000.000/0001-00</span>
+  </div>
+</footer>
+<sc-if value="{{ showBuyBar }}" hint-placeholder-val="{{ false }}"><div style="height:76px;background:#161616"></div></sc-if>
+</div>
+
+<!-- CARRINHO -->
+<sc-if value="{{ cartOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeCart }}" style="position:fixed;inset:0;background:rgba(12,12,12,.5);z-index:70;animation:epFade .2s"></div>
+  <aside style="position:fixed;top:0;right:0;bottom:0;width:min(420px,92vw);background:#fff;z-index:71;display:flex;flex-direction:column;animation:epSlideR .28s cubic-bezier(.2,.8,.2,1);box-shadow:-8px 0 24px rgba(0,0,0,.12)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 14px 20px;border-bottom:1px solid #E4E6EA">
+      <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:18px">Carrinho ({{ count }})</span>
+      <button onClick="{{ closeCart }}" aria-label="Fechar" style="width:44px;height:44px;border:0;background:none;font-size:26px;cursor:pointer;color:#1A1F2B">×</button>
+    </div>
+    <sc-if value="{{ cartFilled }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:14px 20px;background:#F5F5F5;display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:13px;font-weight:500;color:#161616">{{ shipMsg }}</span>
+        <div style="height:6px;border-radius:3px;background:#EAEAEA;overflow:hidden"><div style="height:100%;width:{{ shipPct }};background:#C8102E;border-radius:3px;transition:width .3s"></div></div>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column">
+      <div style="flex:1 0 auto;padding:8px 20px">
+        <sc-for list="{{ cartItems }}" as="c" hint-placeholder-count="2">
+          <div style="display:flex;gap:14px;padding:16px 0;border-bottom:1px solid #EEF0F3;min-width:0">
+            <button onClick="{{ c.open }}" style="width:76px;aspect-ratio:3/4;border-radius:5px;border:0;padding:0;background-color:{{ c.bg }};flex:none;cursor:pointer;overflow:hidden"><img src="{{ c.img }}" alt="{{ c.name }}" style="width:100%;height:100%;object-fit:cover;display:block"></button>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:14px;line-height:1.3">{{ c.name }}</span>
+              <span style="font-size:12px;color:#5C6472">{{ c.meta }}</span>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto">
+                <div style="display:flex;align-items:center;border:1px solid #C9CDD4;border-radius:6px;height:36px">
+                  <button onClick="{{ c.dec }}" aria-label="Diminuir" style="width:34px;height:100%;border:0;background:none;font-size:18px;cursor:pointer;color:#1A1F2B">−</button>
+                  <span style="min-width:22px;text-align:center;font-size:14px;font-weight:700">{{ c.qty }}</span>
+                  <button onClick="{{ c.inc }}" aria-label="Aumentar" style="width:34px;height:100%;border:0;background:none;font-size:18px;cursor:pointer;color:#1A1F2B">+</button>
+                </div>
+                <span style="font-weight:700;font-size:15px">{{ c.total }}</span>
+              </div>
+              <button onClick="{{ c.remove }}" style="align-self:flex-start;background:none;border:0;padding:0;color:#5C6472;font-size:12px;text-decoration:underline;cursor:pointer">Remover</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      </div>
+      <div style="border-top:1px solid #E4E6EA;padding:14px 20px 16px;display:flex;flex-direction:column;gap:10px;background:#fff;position:sticky;bottom:0">
+        <sc-if value="{{ noCoupon }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:8px">
+            <input value="{{ couponIn }}" onChange="{{ onCoupon }}" onKeyDown="{{ onCouponKey }}" placeholder="Cupom de desconto" style="flex:1;min-width:0;height:44px;border:1px solid #C9CDD4;border-radius:6px;padding:0 12px;font-size:15px;text-transform:uppercase;outline:none">
+            <button onClick="{{ applyCoupon }}" style="height:44px;padding:0 16px;border:1.5px solid #161616;border-radius:6px;background:#fff;color:#161616;font-weight:700;font-size:14px;cursor:pointer">Aplicar</button>
+          </div>
+          <sc-if value="{{ hasCouponMsg }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:13px;color:#C8102E">{{ couponMsg }}</span>
+          </sc-if>
+        </sc-if>
+        <sc-if value="{{ hasDisc }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;justify-content:space-between;align-items:center;background:#FCEDEF;border-radius:6px;padding:10px 12px;font-size:13px;color:#A50D26">
+            <span><strong>EPOS10</strong> aplicado · 10% de desconto</span>
+            <button onClick="{{ removeCoupon }}" style="background:none;border:0;color:#A50D26;font-size:12px;text-decoration:underline;cursor:pointer">remover</button>
+          </div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:14px">
+          <div style="display:flex;justify-content:space-between"><span style="color:#5C6472">Subtotal</span><span>{{ subFmt }}</span></div>
+          <sc-if value="{{ hasDisc }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;justify-content:space-between;color:#C8102E"><span>Desconto</span><span>− {{ discFmt }}</span></div>
+          </sc-if>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:4px"><span style="font-weight:700">Total</span><span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:20px">{{ cartTotalFmt }}</span></div>
+        </div>
+        <button onClick="{{ goCheckout }}" style="height:54px;border:0;border-radius:6px;background:#C8102E;color:#fff;font-family:Montserrat,sans-serif;font-weight:800;font-size:15px;letter-spacing:.03em;text-transform:uppercase;cursor:pointer">Finalizar compra</button>
+        <button onClick="{{ closeCart }}" style="height:40px;border:0;background:none;color:#161616;font-weight:700;font-size:14px;cursor:pointer">Continuar comprando</button>
+      </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;text-align:center">
+        <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:17px">Seu carrinho está vazio</span>
+        <span style="font-size:14px;color:#5C6472">Use o cupom EPOS10 e ganhe 10% na primeira compra.</span>
+        <button onClick="{{ seeAll }}" style="height:48px;padding:0 24px;border:0;border-radius:6px;background:#C8102E;color:#fff;font-weight:700;cursor:pointer">Ver produtos</button>
+      </div>
+    </sc-if>
+  </aside>
+</sc-if>
+
+<!-- GUIA DE MEDIDAS -->
+<sc-if value="{{ guideOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeGuide }}" style="position:fixed;inset:0;background:rgba(12,12,12,.55);z-index:80;display:flex;align-items:center;justify-content:center;padding:16px;animation:epFade .2s">
+    <div onClick="{{ stop }}" style="background:#fff;border-radius:10px;width:min(560px,100%);max-height:90vh;overflow:auto;padding:24px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:20px">Guia de medidas</span>
+          <span style="font-size:14px;color:#5C6472">Modelagem {{ pd.fitLabel }} · {{ pd.gender }} · medidas em cm</span>
+        </div>
+        <button onClick="{{ closeGuide }}" aria-label="Fechar" style="width:40px;height:40px;border:0;background:#F5F5F5;border-radius:50%;font-size:22px;cursor:pointer;color:#1A1F2B;flex:none">×</button>
+      </div>
+      <div style="border:1px solid #E4E6EA;border-radius:8px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);background:#161616;color:#fff">
+          <sc-for list="{{ guide.cols }}" as="h" hint-placeholder-count="4">
+            <span style="padding:12px;font-size:13px;font-weight:700">{{ h.v }}</span>
+          </sc-for>
+        </div>
+        <sc-for list="{{ guide.rows }}" as="r" hint-placeholder-count="7">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);background:{{ r.bg }};border-top:1px solid #EEF0F3">
+            <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="4">
+              <span style="padding:11px 12px;font-size:14px">{{ c.v }}</span>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.55;color:#5C6472">Meça a cintura na altura do umbigo e o quadril na parte mais larga. Entre dois tamanhos, escolha o maior. Dúvidas? Fale com a gente no WhatsApp.</p>
+    </div>
+  </div>
+</sc-if>
+
+<!-- QUAL MEU TAMANHO -->
+<sc-if value="{{ advOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeAdv }}" style="position:fixed;inset:0;background:rgba(12,12,12,.55);z-index:80;display:flex;align-items:center;justify-content:center;padding:16px;animation:epFade .2s">
+    <div onClick="{{ stop }}" style="background:#fff;border-radius:8px;width:min(440px,100%);max-height:90vh;overflow:auto;padding:24px;display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:20px">Qual é o meu tamanho?</span>
+          <span style="font-size:14px;color:#5C6472;line-height:1.5">Informe sua altura e seu peso para receber uma sugestão na modelagem {{ pd.fitLabel }}.</span>
+        </div>
+        <button onClick="{{ closeAdv }}" aria-label="Fechar" style="width:40px;height:40px;border:0;background:#F5F5F5;border-radius:50%;font-size:22px;cursor:pointer;color:#1A1F2B;flex:none">×</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700">Altura (cm)
+          <input value="{{ advH }}" onChange="{{ onAdvH }}" inputmode="numeric" placeholder="165" style="height:48px;border:1px solid #C9CDD4;border-radius:4px;padding:0 14px;font-size:16px;font-weight:400;outline:none">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700">Peso (kg)
+          <input value="{{ advW }}" onChange="{{ onAdvW }}" onKeyDown="{{ onAdvKey }}" inputmode="numeric" placeholder="62" style="height:48px;border:1px solid #C9CDD4;border-radius:4px;padding:0 14px;font-size:16px;font-weight:400;outline:none">
+        </label>
+      </div>
+      <button onClick="{{ runAdv }}" style="height:50px;border:0;border-radius:4px;background:#161616;color:#fff;font-family:Montserrat,sans-serif;font-weight:800;font-size:14px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer">Ver sugestão</button>
+      <sc-if value="{{ advErr }}" hint-placeholder-val="{{ false }}">
+        <span style="color:#C8102E;font-size:14px">Preencha uma altura entre 120 e 220 cm e um peso entre 35 e 180 kg.</span>
+      </sc-if>
+      <sc-if value="{{ advHas }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#F5F5F5;border-radius:6px;padding:20px;display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5C6472">Sugerimos</span>
+          <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:44px;line-height:1;color:#161616">{{ advSize }}</span>
+          <span style="font-size:14px;line-height:1.5;color:#3A404C">{{ advNote }}</span>
+          <sc-if value="{{ advCanPick }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ pickAdv }}" style="height:48px;padding:0 22px;border:0;border-radius:4px;background:#C8102E;color:#fff;font-family:Montserrat,sans-serif;font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer">Selecionar tamanho {{ advSize }}</button>
+          </sc-if>
+        </div>
+      </sc-if>
+      <span style="font-size:12px;color:#8A909B;line-height:1.5">Sugestão aproximada, baseada nas medidas médias desta modelagem. Confira também o guia de medidas.</span>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showBuyBar }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;left:0;right:0;bottom:0;z-index:60;background:#fff;border-top:1px solid #E4E6EA;box-shadow:0 -6px 20px rgba(0,0,0,.08);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:14px">
+    <div style="display:flex;flex-direction:column;min-width:0">
+      <span style="font-size:12px;color:#5C6472;white-space:nowrap">{{ pd.buyBarSize }}</span>
+      <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:18px;color:{{ pd.priceColor }};white-space:nowrap">{{ pd.price }}</span>
+    </div>
+    <button onClick="{{ addToCart }}" style="flex:1;height:50px;border:0;border-radius:4px;background:#C8102E;color:#fff;font-family:Montserrat,sans-serif;font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer">Adicionar ao carrinho</button>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showWa }}" hint-placeholder-val="{{ true }}">
+<a href="https://wa.me/5514999999999" target="_blank" aria-label="Fale conosco no WhatsApp" title="Fale conosco no WhatsApp" style="position:fixed;right:16px;bottom:{{ waBottom }};z-index:65;width:52px;height:52px;border-radius:50%;background:#1FA855;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.22)" style-hover="color:#fff;background:#178F47">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20z"></path></svg>
+</a>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;freeShipping&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:299,&quot;min&quot;:0,&quot;max&quot;:1000,&quot;step&quot;:10,&quot;unit&quot;:&quot;R$&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Loja&quot;},&quot;showSwatches&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Loja&quot;}}">
+const RED='#C8102E', INK='#1A1F2B', BLUE='#161616';
+const WASH={
+  escuro:{name:'Azul escuro',hex:'#22344F'},
+  medio:{name:'Azul médio',hex:'#3F5E88'},
+  claro:{name:'Azul claro',hex:'#8FA9C9',light:true},
+  preto:{name:'Preto',hex:'#1D1D20'},
+  stone:{name:'Black stone',hex:'#4A4C52'},
+  off:{name:'Off-white',hex:'#E9E5DC',light:true},
+};
+const NUM=[36,38,40,42,44,46,48], ALPHA=['P','M','G','GG'];
+const FITS=['Skinny','Reta','Mom','Wide Leg','Bermuda','Jaqueta'];
+const FIT_LABEL={Skinny:'Skinny',Reta:'Reta',Mom:'Mom','Wide Leg':'Wide Leg',Bermuda:'Bermudas',Jaqueta:'Jaquetas'};
+const DESC={
+  Skinny:'Modelagem justa do quadril ao tornozelo, com elastano para acompanhar o movimento. Cós com cinco passantes e bolsos funcionais.',
+  Reta:'Perna reta da coxa até a barra. Caimento clássico que vai do trabalho ao fim de semana.',
+  Mom:'Cintura alta, quadril mais solto e perna que afunila na barra. Inspirada nos anos 90.',
+  'Wide Leg':'Perna ampla do quadril à barra, cós alto e tecido encorpado com bom caimento.',
+  Bermuda:'Comprimento acima do joelho, cinco bolsos e barra com acabamento feito na fábrica.',
+  Jaqueta:'Jeans encorpado, botões metálicos, dois bolsos frontais com lapela e ajuste na cintura.'
+};
+const COMP={Skinny:'98% algodão, 2% elastano · denim 11,5 oz',Reta:'99% algodão, 1% elastano · denim 12 oz',Mom:'100% algodão · denim 13 oz','Wide Leg':'100% algodão · denim 13 oz',Bermuda:'99% algodão, 1% elastano · denim 11 oz',Jaqueta:'100% algodão · denim 13 oz'};
+const V=n=>`images/v2/${n}.jpg`;
+const PIMG={1:['f-skinny','f-skinny-2'],2:['f-mom','f-mom-2'],3:['f-wide','f-wide-2'],4:['f-reta','f-reta-2'],5:['black-flat','f-stone'],6:['f-destroyed','f-destroyed-2'],7:['bermuda-f','bermuda-look'],8:['f-jaqueta-2','f-jaqueta'],9:['m-reta','d-pilha'],10:['m-skinny-2','d-bolso'],11:['m-skinny','black-flat'],12:['m-wide','m-wide-2'],13:['bermuda-m','d-bolso'],14:['bermuda-m2','d-bolso'],15:['m-trucker','m-wide-2'],16:['f-vintage','d-claro']};
+const IMG=p=>V(PIMG[p.id][0]), IMG2=p=>V(PIMG[p.id][1]);
+const RATING=p=>Math.min(5,4.5+((p.id*37)%6)/10), REVN=p=>12+(p.id*53)%80;
+const STARS=r=>'★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r));
+const f1=r=>r.toFixed(1).replace('.',',');
+const LOW=p=>(p.fit==='Jaqueta'?['P','M','G','GG']:[36,38,40,42,44,46,48]).filter((z,i)=>!p.out.includes(z)&&(p.id+i)%4===0);
+const COMMENTS=[
+  {name:'Mariana S.',city:'Ourinhos, SP',stars:5,title:'Caimento perfeito',text:'Comprei no tamanho de sempre e serviu certinho. O tecido é encorpado e não deformou depois de lavar.',date:'há 3 dias'},
+  {name:'Rafael M.',city:'Londrina, PR',stars:5,title:'Chegou no dia seguinte',text:'O pedido saiu no mesmo dia. A lavagem é igual à da foto e a costura é bem feita.',date:'há 1 semana'},
+  {name:'Juliana P.',city:'Marília, SP',stars:4,title:'Gostei muito',text:'Ficou um pouco comprida para mim, mas fiz a barra e ficou ótima. Já quero outra cor.',date:'há 2 semanas'},
+  {name:'Carlos E.',city:'Assis, SP',stars:5,title:'Melhor custo-benefício',text:'Qualidade de marca grande pelo preço de fábrica. Terceira peça que compro aqui.',date:'há 3 semanas'}];
+const HOME_REVIEWS=[
+  {id:2,name:'Fernanda L.',city:'Bauru, SP',text:'A mom jeans ficou perfeita na cintura, coisa difícil de achar. O jeans é firme e confortável.'},
+  {id:9,name:'Rodrigo A.',city:'Ourinhos, SP',text:'Uso a reta tradicional para trabalhar há meses e continua com a cor de nova. Preço justo.'},
+  {id:8,name:'Camila R.',city:'Presidente Prudente, SP',text:'A jaqueta é linda e veio super bem embalada. Troquei o tamanho sem pagar nada.'}];
+const LOOK=[4,16,8];
+const suggest=(p,w)=>{if(p.fit==='Jaqueta')return w<62?'P':w<76?'M':w<90?'G':'GG';const t=p.g==='M'?[60,67,74,81,88,96]:[52,58,64,70,77,85];const i=t.findIndex(x=>w<x);return NUM[i<0?6:i];};
+const ICONS={lock:'M6 11h12v10H6zM8 11V8a4 4 0 0 1 8 0v3',swap:'M4 8h13l-3-3M20 16H7l3 3',box:'M3 7l9-4 9 4v10l-9 4-9-4zM3 7l9 4 9-4M12 11v10'};
+const gallery=p=>[...new Set([PIMG[p.id][0],PIMG[p.id][1],p.w.includes('claro')?'d-claro':'d-bolso',p.fit==='Jaqueta'?'d-rebite':'d-pilha','d-rebite','d-claro'])].slice(0,4).map(V);
+
+const CAT_IMG={Skinny:V('f-skinny-2'),Reta:V('f-reta'),Mom:V('f-mom'),'Wide Leg':V('f-wide-2'),Bermuda:V('bermuda-f'),Jaqueta:V('f-jaqueta')};
+const PRODUCTS=[
+  {id:1,name:'Calça Skinny Cintura Alta',g:'F',fit:'Skinny',price:139.9,old:179.9,w:['escuro','preto'],out:[36,48],isNew:true,sales:88},
+  {id:2,name:'Calça Mom Jeans Clássica',g:'F',fit:'Mom',price:159.9,w:['medio','claro'],out:[46],sales:99},
+  {id:3,name:'Calça Wide Leg Cós Alto',g:'F',fit:'Wide Leg',price:189.9,w:['escuro','claro'],out:[],isNew:true,sales:80},
+  {id:4,name:'Calça Reta Lavagem Clara',g:'F',fit:'Reta',price:149.9,old:169.9,w:['claro','medio'],out:[38],sales:76},
+  {id:5,name:'Calça Skinny Black Stone',g:'F',fit:'Skinny',price:129.9,w:['stone','preto'],out:[44,48],sales:94},
+  {id:6,name:'Calça Mom Destroyed',g:'F',fit:'Mom',price:169.9,old:199.9,w:['claro'],out:[36],isNew:true,sales:70},
+  {id:7,name:'Bermuda Jeans Barra Desfiada',g:'F',fit:'Bermuda',price:89.9,w:['claro','medio'],out:[],isNew:true,sales:85},
+  {id:8,name:'Jaqueta Jeans Oversized',g:'F',fit:'Jaqueta',price:229.9,old:259.9,w:['medio','escuro'],out:['GG'],sales:66},
+  {id:9,name:'Calça Reta Tradicional Masculina',g:'M',fit:'Reta',price:149.9,w:['escuro','medio'],out:[],sales:100},
+  {id:10,name:'Calça Skinny Masculina com Elastano',g:'M',fit:'Skinny',price:139.9,w:['preto','escuro'],out:[38],sales:90},
+  {id:11,name:'Calça Reta Black Stone Masculina',g:'M',fit:'Reta',price:159.9,old:189.9,w:['stone'],out:[48],sales:83},
+  {id:12,name:'Calça Wide Leg Masculina',g:'M',fit:'Wide Leg',price:179.9,w:['claro','escuro'],out:[],isNew:true,sales:60},
+  {id:13,name:'Bermuda Jeans Masculina Reta',g:'M',fit:'Bermuda',price:99.9,old:119.9,w:['medio','escuro'],out:[40],sales:87},
+  {id:14,name:'Bermuda Jeans Lavagem Escura',g:'M',fit:'Bermuda',price:109.9,w:['escuro'],out:[],isNew:true,sales:72},
+  {id:15,name:'Jaqueta Jeans Trucker',g:'M',fit:'Jaqueta',price:239.9,w:['escuro','stone'],out:['P'],sales:68},
+  {id:16,name:'Calça Reta Vintage Lavagem Clara',g:'F',fit:'Reta',price:159.9,w:['claro'],out:[46,48],isNew:true,sales:64},
+];
+const PRICES=[{id:'a',label:'Até R$ 100',min:0,max:100},{id:'b',label:'R$ 100 a R$ 150',min:100,max:150},{id:'c',label:'R$ 150 a R$ 200',min:150,max:200},{id:'d',label:'Acima de R$ 200',min:200,max:1e9}];
+const BANNERS=[
+  {kicker:'Primeira compra',title:'10% OFF na primeira compra',body:'Use o cupom no carrinho e aproveite em todo o site.',code:'Cupom EPOS10',cta:'Comprar agora',img:V('hero1'),posD:'center 38%',posM:'center 30%',cat:{}},
+  {kicker:'Lançamento',title:'Wide Leg: cintura alta e perna ampla',body:'A modelagem da estação, feminina e masculina, em três lavagens.',cta:'Ver Wide Leg',img:V('hero2'),posD:'center 55%',posM:'40% center',cat:{fit:'Wide Leg'}},
+  {kicker:'Verão',title:'Bermudas a partir de R$ 89,90',body:'Jeans leve, barra desfiada ou reta, do 36 ao 48.',cta:'Ver bermudas',img:V('hero3'),posD:'center 35%',posM:'center 30%',cat:{fit:'Bermuda'}},
+];
+const QR=(()=>{const N=25,c=[];let seed=11;const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  const fin=(x,y)=>{for(const [fx,fy] of [[0,0],[N-7,0],[0,N-7]]){const dx=x-fx,dy=y-fy;if(dx>=-1&&dx<=7&&dy>=-1&&dy<=7){if(dx<0||dy<0||dx>6||dy>6)return 0;return (dx===0||dx===6||dy===0||dy===6||(dx>=2&&dx<=4&&dy>=2&&dy<=4))?1:0}}return -1};
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){const f=fin(x,y);c.push({bg:(f===-1?r()>.52:f)?INK:'#fff'})}return c;})();
+const brl=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const nInst=v=>Math.max(1,Math.min(6,Math.floor(v/25)));
+const byId=id=>PRODUCTS.find(p=>p.id===id);
+const sizesOf=p=>p.fit==='Jaqueta'?ALPHA:NUM;
+const toggle=(arr,v)=>arr.includes(v)?arr.filter(x=>x!==v):[...arr,v];
+
+class Component extends DCLogic {
+  sizesRef=React.createRef();
+  state={page:'home',cat:{},f:{sizes:[],washes:[],fits:[],price:null},sort:'vendidos',pid:1,wash:null,size:null,sizeErr:false,img:0,guideOpen:false,
+    cep:'',cepErr:false,freight:false,cart:[],coupon:null,couponIn:'',couponMsg:'',cartOpen:false,filtersOpen:false,step:1,ship:'pac',pay:'pix',inst:1,
+    order:null,advOpen:false,advH:'',advW:'',advRes:null,advErr:false,nl:'',nlDone:false,nlErr:false,mobile:typeof window!=='undefined'&&window.innerWidth<860,banner:0,q:'',copied:false};
+  componentDidMount(){
+    try{const s=JSON.parse(localStorage.getItem('epos-cart-v1')||'null');if(s)this.setState({cart:s.cart||[],coupon:s.coupon||null});}catch(e){}
+    try{const n=JSON.parse(localStorage.getItem('epos-nav-v1')||'null');if(n&&n.page)this.setState(n);}catch(e){}
+    this.onResize=()=>this.setState({mobile:window.innerWidth<860});
+    window.addEventListener('resize',this.onResize);
+    this.timer=setInterval(()=>{if(this.state.page==='home')this.setState(s=>({banner:(s.banner+1)%BANNERS.length}))},6000);
+  }
+  componentWillUnmount(){window.removeEventListener('resize',this.onResize);clearInterval(this.timer);}
+  setCart(cart,coupon=this.state.coupon){this.setState({cart,coupon});localStorage.setItem('epos-cart-v1',JSON.stringify({cart,coupon}));}
+  nav(patch){
+    const next={...this.state,...patch};
+    this.setState({...patch,cartOpen:false,filtersOpen:false,guideOpen:false,advOpen:false,advRes:null,advErr:false});
+    if(next.page!=='success')localStorage.setItem('epos-nav-v1',JSON.stringify({page:next.page,cat:next.cat,pid:next.pid,wash:next.wash,step:next.step}));
+    window.scrollTo(0,0);
+  }
+  goCat(cat){this.nav({page:'category',cat,f:{sizes:[],washes:[],fits:[],price:null}});}
+  openProduct(id){const p=byId(id);this.nav({page:'product',pid:id,wash:p.w[0],size:null,sizeErr:false,img:0,freight:false});}
+  card(p){const w=WASH[p.w[0]],n=nInst(p.price);
+    return {id:p.id,img:IMG(p),name:p.name,price:brl(p.price),old:p.old?brl(p.old):'',hasOff:!!p.old,off:p.old?`-${Math.round((1-p.price/p.old)*100)}%`:'',
+      inst:`${n}x de ${brl(p.price/n)}`,bg:w.hex,ink:w.light?INK:'#fff',washName:w.name.toLowerCase(),isNew:!!p.isNew,
+      priceColor:p.old?RED:INK,swatches:p.w.map(k=>({hex:WASH[k].hex})),showSw:this.props.showSwatches??true,open:()=>this.openProduct(p.id),img2:IMG2(p),rating:f1(RATING(p)),stars:STARS(RATING(p)),reviews:REVN(p),freeShip:p.price>(this.props.freeShipping??299),
+      sizesAvail:sizesOf(p).map(z=>{const out=p.out.includes(z);return {label:z,color:out?'#A6ABB4':INK,deco:out?'line-through':'none',border:out?'#E4E6EA':'#C9CDD4'}})};}
+  runAdv(p){const hh=+this.state.advH,ww=+this.state.advW;if(!(hh>=120&&hh<=220&&ww>=35&&ww<=180)){this.setState({advErr:true,advRes:null});return;}this.setState({advErr:false,advRes:suggest(p,ww)});}
+  setF(patch){this.setState(s=>({f:{...s.f,...patch}}));}
+
+  renderVals(){
+    const s=this.state, th=this.props.freeShipping??299, mobile=s.mobile;
+    // cart
+    const items=s.cart.map(it=>({...it,p:byId(it.id)})).filter(x=>x.p);
+    const sub=items.reduce((a,x)=>a+x.p.price*x.qty,0);
+    const disc=s.coupon?Math.round(sub*10)/100:0;
+    const count=items.reduce((a,x)=>a+x.qty,0);
+    const shipCost={pac:sub>=th?0:19.9,sedex:32.9,loja:0}[s.ship];
+    const shipKnown=s.page==='checkout'&&s.step>=2;
+    const total=sub-disc+(shipKnown?shipCost:0);
+    const upd=(key,fn)=>this.setCart(s.cart.map(c=>c.key===key?fn(c):c).filter(c=>c.qty>0));
+    const cartItems=items.map(x=>({img:IMG(x.p),name:x.p.name,meta:`${WASH[x.wash].name} · Tam. ${x.size}`,qty:x.qty,total:brl(x.p.price*x.qty),bg:WASH[x.wash].hex,
+      inc:()=>upd(x.key,c=>({...c,qty:c.qty+1})),dec:()=>upd(x.key,c=>({...c,qty:c.qty-1})),remove:()=>upd(x.key,c=>({...c,qty:0})),open:()=>this.openProduct(x.id)}));
+    const remaining=Math.max(0,th-sub);
+    const applyCoupon=()=>{const c=s.couponIn.trim().toUpperCase();if(c==='EPOS10'){this.setCart(s.cart,'EPOS10');this.setState({couponIn:'',couponMsg:''});}else this.setState({couponMsg:c?'Cupom inválido ou expirado.':'Digite um cupom.'});};
+
+    // category
+    const c=s.cat||{}, f=s.f;
+    let list=PRODUCTS.filter(p=>(!c.g||p.g===c.g)&&(!c.fit||p.fit===c.fit)&&(!c.promo||p.old)&&(!c.q||p.name.toLowerCase().includes(c.q.toLowerCase())||p.fit.toLowerCase().includes(c.q.toLowerCase())));
+    if(f.sizes.length)list=list.filter(p=>f.sizes.some(z=>sizesOf(p).includes(z)&&!p.out.includes(z)));
+    if(f.washes.length)list=list.filter(p=>p.w.some(k=>f.washes.includes(k)));
+    if(f.fits.length)list=list.filter(p=>f.fits.includes(p.fit));
+    if(f.price){const r=PRICES.find(x=>x.id===f.price);list=list.filter(p=>p.price>=r.min&&p.price<r.max);}
+    list=[...list].sort(s.sort==='menor'?(a,b)=>a.price-b.price:s.sort==='lancamentos'?(a,b)=>(b.isNew?1:0)-(a.isNew?1:0)||b.id-a.id:(a,b)=>b.sales-a.sales);
+    const gName=c.g==='F'?'Feminino':c.g==='M'?'Masculino':'';
+    const catTitle=c.q?`Busca: “${c.q}”`:c.promo?'Promoções':c.fit?(FIT_LABEL[c.fit]+(gName?' '+gName.toLowerCase():'')):gName||'Todos os produtos';
+    const chips=[...f.sizes.map(z=>({label:`Tam. ${z}`,remove:()=>this.setF({sizes:toggle(f.sizes,z)})})),
+      ...f.washes.map(k=>({label:WASH[k].name,remove:()=>this.setF({washes:toggle(f.washes,k)})})),
+      ...f.fits.map(k=>({label:FIT_LABEL[k],remove:()=>this.setF({fits:toggle(f.fits,k)})})),
+      ...(f.price?[{label:PRICES.find(x=>x.id===f.price).label,remove:()=>this.setF({price:null})}]:[])];
+
+    // product
+    const p=byId(s.pid)||PRODUCTS[0];
+    const wk=s.wash&&p.w.includes(s.wash)?s.wash:p.w[0], W=WASH[wk], pInk=W.light?INK:'#fff';
+    const views=['Frente','Costas','Detalhe do tecido','Look completo'];
+    const n=nInst(p.price);
+    const pd={name:p.name,ref:`EP-${1000+p.id}`,price:brl(p.price),old:p.old?brl(p.old):'',hasOff:!!p.old,off:p.old?`-${Math.round((1-p.price/p.old)*100)}%`:'',
+      priceColor:p.old?RED:INK,inst:`${n}x de ${brl(p.price/n)}`,bg:W.hex,ink:pInk,view:views[s.img].toLowerCase(),washName:W.name,
+      gender:p.g==='F'?'Feminino':'Masculino',fitLabel:FIT_LABEL[p.fit],desc:DESC[p.fit],comp:COMP[p.fit],sizeLabel:s.size||'selecione',
+      goGender:()=>this.goCat({g:p.g}),goFit:()=>this.goCat({g:p.g,fit:p.fit}),
+      mainImg:gallery(p)[s.img]||IMG(p),gallery:gallery(p).map((src,i)=>({img:src,label:views[i],bg:W.hex,ink:pInk,border:i===s.img?BLUE:'transparent',pick:()=>this.setState({img:i})})),
+      washes:p.w.map(k=>({name:WASH[k].name,hex:WASH[k].hex,ring:k===wk?`0 0 0 2px #fff, 0 0 0 4px ${BLUE}`:'0 0 0 1px #C9CDD4',pick:()=>this.setState({wash:k})})),
+      sizes:sizesOf(p).map(z=>{const out=p.out.includes(z),on=s.size===z;return {label:z,out,low:!out&&LOW(p).includes(z),bg:on?BLUE:'#fff',color:out?'#A6ABB4':on?'#fff':INK,border:on?BLUE:out?'#E4E6EA':'#C9CDD4',
+        deco:out?'line-through':'none',cursor:out?'not-allowed':'pointer',strike:out?'linear-gradient(to top right,transparent calc(50% - 1px),#D5D8DE,transparent calc(50% + 1px))':'none',
+        pick:()=>{if(!out)this.setState({size:z,sizeErr:false})}}})};
+    {const r=RATING(p),nR=REVN(p),low=LOW(p),five=Math.round((r-4)*100*0.9+8);
+     const dist=[five,Math.max(0,90-five),6,2,1].map((v,i)=>({label:(5-i)+'★',pct:Math.round(v*100/(five+Math.max(0,90-five)+9))+'%'}));
+     Object.assign(pd,{rating:f1(r),stars:STARS(r),reviewsLabel:`${nR} avaliações`,dist,
+       comments:[0,1,2].map(i=>{const c=COMMENTS[(p.id+i)%COMMENTS.length],sz=sizesOf(p);return {...c,stars:STARS(c.stars),size:sz[(p.id+i*2)%sz.length]}}),
+       hasLowMsg:low.length>0,lowMsg:s.size&&low.includes(s.size)?`Últimas unidades no tamanho ${s.size}`:`Últimas unidades nos tamanhos marcados`,
+       buyBarSize:s.size?`Tamanho ${s.size}`:'Escolha o tamanho'});}
+    let guide;
+    if(p.fit==='Jaqueta')guide={cols:['Tamanho','Busto','Comprimento','Manga'],rows:ALPHA.map((z,i)=>[z,96+6*i,62+2*i,60+i])};
+    else{const len={Skinny:100,Reta:104,Mom:98,'Wide Leg':106,Bermuda:48}[p.fit],c0=p.g==='M'?74:64,h0=p.g==='M'?94:90;
+      guide={cols:['Tamanho','Cintura','Quadril','Comprimento'],rows:NUM.map((z,i)=>[z,c0+4*i,h0+4*i,len+i])};}
+    guide={cols:guide.cols.map(v=>({v})),rows:guide.rows.map((r,i)=>({bg:i%2?'#F8F9FA':'#fff',cells:r.map(v=>({v}))}))};
+    const related=PRODUCTS.filter(x=>x.id!==p.id&&(x.fit===p.fit||x.g===p.g)).sort((a,b)=>(b.fit===p.fit)-(a.fit===p.fit)||b.sales-a.sales).slice(0,4);
+    const addToCart=()=>{
+      if(!s.size){this.setState({sizeErr:true});const el=this.sizesRef.current;if(el)window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-180,behavior:'smooth'});return;}
+      const key=`${p.id}-${wk}-${s.size}`;const ex=s.cart.find(x=>x.key===key);
+      this.setCart(ex?s.cart.map(x=>x.key===key?{...x,qty:x.qty+1}:x):[...s.cart,{key,id:p.id,wash:wk,size:s.size,qty:1}]);
+      this.setState({cartOpen:true});
+    };
+    const onCep=e=>{const d=e.target.value.replace(/\D/g,'').slice(0,8);this.setState({cep:d.length>5?d.slice(0,5)+'-'+d.slice(5):d,cepErr:false});};
+    const calcFreight=()=>{if(s.cep.replace(/\D/g,'').length===8)this.setState({freight:true,cepErr:false});else this.setState({cepErr:true,freight:false});};
+
+    // checkout
+    const stepLabels=['Identificação','Entrega','Pagamento'];
+    const steps=stepLabels.map((l,i)=>{const k=i+1,done=k<s.step,cur=k===s.step;return {label:l,mark:done?'✓':String(k),bar:k<=s.step?BLUE:'#D5D8DE',dot:done||cur?BLUE:'#A6ABB4',color:done||cur?INK:'#8A909B'}});
+    const shipDefs=[{id:'pac',title:'Correios PAC',detail:'5 a 8 dias úteis',cost:sub>=th?0:19.9},{id:'sedex',title:'Correios SEDEX',detail:'2 a 3 dias úteis',cost:32.9},{id:'loja',title:'Retirar na loja de Ourinhos',detail:'Rua Exemplo, 000 · Centro · pronto em 1 dia útil',cost:0}];
+    const shipOpts=shipDefs.map(o=>{const on=s.ship===o.id;return {...o,price:o.cost?brl(o.cost):'Grátis',priceColor:o.cost?INK:'#1A7F45',border:on?BLUE:'#D5D8DE',bg:on?'#FDF2F4':'#fff',dot:on?BLUE:'#fff',pick:()=>this.setState({ship:o.id})}});
+    const payDefs=[['pix','Pix'],['card','Cartão'],['boleto','Boleto']];
+    const payTabs=payDefs.map(([id,label])=>{const on=s.pay===id;return {label,border:on?BLUE:'#D5D8DE',bg:on?BLUE:'#fff',color:on?'#fff':INK,pick:()=>this.setState({pay:id})}});
+    const nT=nInst(total);
+    const finish=()=>{
+      const order={no:'EPJ-'+String(Math.floor(100000+Math.random()*900000)),count:`${count} ${count===1?'peça':'peças'}`,total:brl(total),
+        ship:shipDefs.find(x=>x.id===s.ship).title,pay:s.pay==='pix'?'Pix':s.pay==='boleto'?'Boleto':`Cartão em ${s.inst}x`};
+      this.setCart([],null);this.nav({page:'success',order,step:1});
+    };
+
+    const navItems=[['Feminino',{g:'F'}],['Masculino',{g:'M'}],['Promoções',{promo:true}]].map(([label,cat])=>{
+      const active=s.page==='category'&&((cat.g&&c.g===cat.g&&!c.promo)||(cat.promo&&c.promo));
+      return {label,go:()=>this.goCat(cat),color:active?RED:INK,bar:active?RED:'transparent'};});
+    const b=BANNERS[s.banner];
+    const SC=[['Skinny','escuro'],['Reta','medio'],['Mom','claro'],['Wide Leg','escuro'],['Bermuda','claro'],['Jaqueta','stone']];
+    const doSearch=()=>{const q=s.q.trim();if(q)this.goCat({q});};
+
+    return {
+      mobile,desktop:!mobile,count,hasCount:count>0,q:s.q,onQ:e=>this.setState({q:e.target.value}),onQKey:e=>{if(e.key==='Enter')doSearch();},doSearch,
+      navItems,goHome:()=>this.nav({page:'home'}),goF:()=>this.goCat({g:'F'}),goM:()=>this.goCat({g:'M'}),goPromo:()=>this.goCat({promo:true}),seeAll:()=>this.goCat({}),
+      isHome:s.page==='home',isCategory:s.page==='category',isProduct:s.page==='product',isCheckout:s.page==='checkout',isSuccess:s.page==='success'&&!!s.order,
+      showTrust:s.page!=='checkout'&&s.page!=='success',
+      banner:{...b,hasCode:!!b.code,go:()=>this.goCat(b.cat)},
+      dots:BANNERS.map((_,i)=>({w:i===s.banner?'36px':'14px',bg:i===s.banner?'#fff':'rgba(255,255,255,.45)',go:()=>this.setState({banner:i})})),
+      prevBanner:()=>this.setState({banner:(s.banner+BANNERS.length-1)%BANNERS.length}),nextBanner:()=>this.setState({banner:(s.banner+1)%BANNERS.length}),
+      bannerPad:mobile?'36px 24px':'48px 72px',
+      shortcutCol:mobile?'128px':'minmax(0,1fr)',
+      shortcuts:SC.map(([fit,w])=>({img:CAT_IMG[fit],label:FIT_LABEL[fit],bg:WASH[w].hex,ink:WASH[w].light?INK:'#fff',go:()=>this.goCat({fit})})),
+      genderTiles:[{label:'Feminino',img:V('f-wide'),pos:'center 72%',bg:'#3F5E88',go:()=>this.goCat({g:'F'})},{label:'Masculino',img:V('m-reta'),pos:'center 72%',bg:'#22344F',go:()=>this.goCat({g:'M'})}],
+      cols4:mobile?'repeat(2,minmax(0,1fr))':'repeat(4,minmax(0,1fr))',
+      launches:PRODUCTS.filter(x=>x.isNew).sort((a,b)=>b.id-a.id).slice(0,4).map(x=>this.card(x)),
+      best:[...PRODUCTS].sort((a,b)=>b.sales-a.sales).slice(0,8).map(x=>this.card(x)),
+      // category
+      catTitle,resultLabel:`${list.length} ${list.length===1?'produto':'produtos'}`,results:list.map(x=>this.card(x)),hasResults:list.length>0,noResults:list.length===0,
+      sort:s.sort,onSort:e=>this.setState({sort:e.target.value}),
+      activeChips:chips,hasActiveChips:chips.length>0,filterCountLabel:chips.length?` (${chips.length})`:'',
+      clearFilters:()=>this.setState({f:{sizes:[],washes:[],fits:[],price:null}}),
+      openFilters:()=>this.setState({filtersOpen:true}),closeFilters:()=>this.setState({filtersOpen:false}),
+      showFilterPanel:!mobile||s.filtersOpen,fPos:mobile?'fixed':'sticky',fTop:mobile?'0':'150px',fWidth:mobile?'min(360px,88vw)':'240px',fPad:mobile?'20px 16px':'0',
+      fAnim:mobile?'epSlideL .28s cubic-bezier(.2,.8,.2,1)':'none',cardMin:mobile?'150px':'200px',
+      fSizes:NUM.map(z=>{const on=f.sizes.includes(z);return {label:z,bg:on?BLUE:'#fff',color:on?'#fff':INK,border:on?BLUE:'#C9CDD4',toggle:()=>this.setF({sizes:toggle(f.sizes,z)})}}),
+      fWashes:Object.keys(WASH).map(k=>{const on=f.washes.includes(k);return {label:WASH[k].name,hex:WASH[k].hex,ring:on?`0 0 0 2px #fff, 0 0 0 4px ${BLUE}`:'0 0 0 1px #C9CDD4',toggle:()=>this.setF({washes:toggle(f.washes,k)})}}),
+      fFits:FITS.map(k=>{const on=f.fits.includes(k);return {label:FIT_LABEL[k],bg:on?BLUE:'#fff',border:on?BLUE:'#A6ABB4',check:on?'✓':'',toggle:()=>this.setF({fits:toggle(f.fits,k)})}}),
+      fPrices:PRICES.map(r=>{const on=f.price===r.id;return {label:r.label,bg:on?BLUE:'#fff',border:on?BLUE:'#A6ABB4',toggle:()=>this.setF({price:on?null:r.id})}}),
+      // product
+      pd,guide,related:related.map(x=>this.card(x)),sizeErr:s.sizeErr,addToCart,
+      guideOpen:s.guideOpen,openGuide:()=>this.setState({guideOpen:true}),closeGuide:()=>this.setState({guideOpen:false}),stop:e=>e.stopPropagation(),
+      cep:s.cep,onCep,onCepKey:e=>{if(e.key==='Enter')calcFreight();},calcFreight,cepErr:s.cepErr,freight:s.freight,
+      freightOpts:[{name:'Retirar na loja de Ourinhos',detail:'Pronto em até 1 dia útil',price:'Grátis',color:'#1A7F45'},
+        {name:'Correios PAC',detail:'5 a 8 dias úteis',price:p.price>=th?'Grátis':'R$ 19,90',color:p.price>=th?'#1A7F45':INK},
+        {name:'Correios SEDEX',detail:'2 a 3 dias úteis',price:'R$ 32,90',color:INK}],
+      // cart
+      cartOpen:s.cartOpen,openCart:()=>this.setState({cartOpen:true}),closeCart:()=>this.setState({cartOpen:false}),
+      cartItems,cartFilled:items.length>0,cartEmpty:items.length===0,
+      shipMsg:remaining>0?`Faltam ${brl(remaining)} para frete grátis`:'Você ganhou frete grátis!',shipPct:`${Math.min(100,sub/th*100)}%`,
+      couponIn:s.couponIn,onCoupon:e=>this.setState({couponIn:e.target.value,couponMsg:''}),onCouponKey:e=>{if(e.key==='Enter')applyCoupon();},applyCoupon,
+      couponMsg:s.couponMsg,hasCouponMsg:!!s.couponMsg,noCoupon:!s.coupon,hasDisc:!!s.coupon,removeCoupon:()=>this.setCart(s.cart,null),
+      subFmt:brl(sub),discFmt:brl(disc),cartTotalFmt:brl(sub-disc),
+      goCheckout:()=>this.nav({page:'checkout',step:1}),
+      // checkout
+      steps,step1:s.step===1,step2:s.step===2,step3:s.step===3,
+      toStep1:()=>this.setState({step:1}),toStep2:()=>{this.setState({step:2});window.scrollTo(0,0);},toStep3:()=>{this.setState({step:3});window.scrollTo(0,0);},
+      shipOpts,needsAddress:s.ship!=='loja',payTabs,payPix:s.pay==='pix',payCard:s.pay==='card',payBoleto:s.pay==='boleto',
+      qr:QR,copyLabel:s.copied?'Código copiado':'Copiar código Pix',copyPix:()=>{this.setState({copied:true});setTimeout(()=>this.setState({copied:false}),2000);},
+      inst:s.inst,onInst:e=>this.setState({inst:+e.target.value}),
+      instOpts:[1,2,3,4,5,6].map(k=>({n:k,label:`${k}x de ${brl(total/k)} sem juros`})),
+      shipFmt:shipKnown?(shipCost?brl(shipCost):'Grátis'):'Calculado na entrega',totalFmt:brl(total),totalInst:`${nT}x de ${brl(total/nT)}`,
+      asideMax:mobile?'none':'380px',asidePos:mobile?'static':'sticky',finish,
+      order:s.order||{},showWa:!s.cartOpen&&!s.filtersOpen&&!s.guideOpen&&!s.advOpen,
+      slides:BANNERS.map((x,i)=>({img:x.img,pos:mobile?x.posM:x.posD,op:i===s.banner?1:0,tf:i===s.banner?'scale(1.04)':'scale(1)'})),
+      heroH:mobile?'calc(100svh - 150px)':'min(720px, calc(100vh - 140px))',heroAlign:mobile?'flex-end':'center',heroPad:mobile?'0 20px 72px':'0 48px',heroSide:mobile?'20px':'48px',
+      heroGrad:mobile?'linear-gradient(to top,rgba(12,12,12,.92) 0%,rgba(12,12,12,.6) 42%,rgba(12,12,12,.05) 72%)':'linear-gradient(90deg,rgba(12,12,12,.85) 0%,rgba(12,12,12,.5) 42%,rgba(12,12,12,0) 72%)',
+      secPad:mobile?'56px 16px':'96px 32px',tileRatio:mobile?'4/5':'1/1',
+      look:LOOK.map(id=>{const x=byId(id);return {img:IMG(x),name:x.name,price:brl(x.price),priceColor:x.old?RED:INK,open:()=>this.openProduct(id)}}),
+      homeReviews:HOME_REVIEWS.map(r=>{const x=byId(r.id);return {...r,stars:'★★★★★',img:IMG(x),product:x.name,open:()=>this.openProduct(r.id)}}),
+      nl:s.nl,onNl:e=>this.setState({nl:e.target.value,nlErr:false}),nlForm:!s.nlDone,nlDone:s.nlDone,nlErr:s.nlErr,
+      submitNl:()=>{/^\S+@\S+\.\S+$/.test(s.nl.trim())?this.setState({nlDone:true}):this.setState({nlErr:true})},
+      onNlKey:e=>{if(e.key==='Enter'){/^\S+@\S+\.\S+$/.test(s.nl.trim())?this.setState({nlDone:true}):this.setState({nlErr:true})}},
+      trustBadges:[{label:'Compra segura',icon:ICONS.lock},{label:'Troca grátis em 30 dias',icon:ICONS.swap},{label:'Envio em até 24h',icon:ICONS.box}],
+      sizesRef:this.sizesRef,showBuyBar:s.page==='product'&&mobile,
+      advOpen:s.advOpen,openAdv:()=>this.setState({advOpen:true,advRes:null,advErr:false}),closeAdv:()=>this.setState({advOpen:false}),
+      advH:s.advH,advW:s.advW,onAdvH:e=>this.setState({advH:e.target.value.replace(/\D/g,'').slice(0,3)}),onAdvW:e=>this.setState({advW:e.target.value.replace(/\D/g,'').slice(0,3)}),
+      runAdv:()=>this.runAdv(p),onAdvKey:e=>{if(e.key==='Enter')this.runAdv(p);},advErr:s.advErr,advHas:!!s.advRes,advSize:s.advRes?String(s.advRes):'',
+      advCanPick:!!s.advRes&&!p.out.includes(s.advRes),
+      advNote:s.advRes?(p.out.includes(s.advRes)?'Esse tamanho está esgotado nesta peça. Fale com a gente no WhatsApp para saber da reposição.':(p.g==='F'&&p.fit!=='Jaqueta'?'Se preferir a peça mais soltinha, escolha um número acima.':'Se estiver entre dois tamanhos, escolha o maior.')):'',
+      pickAdv:()=>this.setState({size:s.advRes,sizeErr:false,advOpen:false}),waBottom:s.page==='product'&&mobile?'88px':'16px'
+    };
+  }
+}
+</script>
+</body>
+</html>

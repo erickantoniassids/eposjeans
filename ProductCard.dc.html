@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div onClick="{{ p.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:10px;min-width:0;font-family:'DM Sans',sans-serif">
+  <div style="position:relative;aspect-ratio:3/4;border-radius:4px;overflow:hidden;background-color:#EEF0F3">
+    <img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+    <div style="position:absolute;inset:0;opacity:0;transition:opacity .35s ease" style-hover="opacity:1">
+      <img src="{{ p.img2 }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+      <div style="position:absolute;left:8px;right:8px;bottom:8px;background:rgba(255,255,255,.95);border-radius:4px;padding:9px 10px;display:flex;flex-direction:column;gap:7px">
+        <span style="font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5C6472">Tamanhos disponíveis</span>
+        <div style="display:flex;flex-wrap:wrap;gap:4px">
+          <sc-for list="{{ p.sizesAvail }}" as="z" hint-placeholder-count="5">
+            <span style="min-width:28px;height:24px;padding:0 5px;border:1px solid {{ z.border }};border-radius:3px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;color:{{ z.color }};text-decoration:{{ z.deco }}">{{ z.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <sc-if value="{{ p.hasOff }}" hint-placeholder-val="{{ false }}">
+      <span style="position:absolute;top:10px;left:10px;background:#C8102E;color:#fff;font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;padding:4px 8px;border-radius:3px;pointer-events:none">{{ p.off }}</span>
+    </sc-if>
+    <sc-if value="{{ p.isNew }}" hint-placeholder-val="{{ false }}">
+      <span style="position:absolute;top:10px;right:10px;background:#fff;color:#161616;font-family:Montserrat,sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;border-radius:3px;pointer-events:none">Novo</span>
+    </sc-if>
+  </div>
+  <sc-if value="{{ p.showSw }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;gap:6px">
+      <sc-for list="{{ p.swatches }}" as="sw" hint-placeholder-count="2">
+        <span style="width:14px;height:14px;border-radius:50%;background:{{ sw.hex }};box-shadow:0 0 0 1px #D5D8DE"></span>
+      </sc-for>
+    </div>
+  </sc-if>
+  <div style="font-size:14px;line-height:1.35;color:#1A1F2B;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ p.name }}</div>
+  <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#5C6472">
+    <span style="color:#C8102E;letter-spacing:1px;font-size:13px">{{ p.stars }}</span>
+    <span><strong style="color:#1A1F2B">{{ p.rating }}</strong> ({{ p.reviews }})</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:3px">
+    <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+      <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:17px;color:{{ p.priceColor }}">{{ p.price }}</span>
+      <sc-if value="{{ p.hasOff }}" hint-placeholder-val="{{ false }}">
+        <span style="font-size:13px;color:#8A909B;text-decoration:line-through">{{ p.old }}</span>
+      </sc-if>
+    </div>
+    <span style="font-size:13px;color:#5C6472">{{ p.inst }} sem juros</span>
+    <sc-if value="{{ p.freeShip }}" hint-placeholder-val="{{ false }}">
+      <span style="align-self:flex-start;margin-top:4px;border:1px solid #161616;color:#161616;font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:3px">Frete grátis</span>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:260,&quot;height&quot;:520},&quot;p&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;}}"></script>
+</body>
+</html>
